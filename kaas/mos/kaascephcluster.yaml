@@ -1,0 +1,181 @@
+apiVersion: kaas.mirantis.com/v1alpha1
+kind: KaaSCephCluster
+metadata:
+  name: CLUSTER_NAME
+  namespace: NAMESPACE
+spec:
+  k8sCluster:
+    name: CLUSTER_NAME
+    namespace: NAMESPACE
+  cephClusterSpec:
+    external:
+      adminSecret: ""
+      enable: false
+      fsid: ""
+      monData: ""
+    network:
+      clusterNet: 10.0.0.0/0
+      publicNet: 10.0.0.0/0
+    objectStorage:
+      rgw:
+        name: rgw-store
+        dataPool:
+          erasureCoded:
+            codingChunks: 1
+            dataChunks: 2
+          failureDomain: host
+          deviceClass: hdd
+        metadataPool:
+          replicated:
+            size: 2
+          failureDomain: host
+          deviceClass: hdd
+        gateway:
+          allNodes: false
+          instances: 2
+          port: 80
+          securePort: 8443
+        preservePoolsOnDelete: false
+    ##################
+    # Pools List
+    #################
+    pools:
+    - default: true
+      deviceClass: hdd
+      name: kubernetes
+      erasureCoded:
+        codingChunks: 0
+        dataChunks: 0
+      replicated:
+        size: 2
+        targetSizeRatio: 0.4
+      role: kubernetes-hdd
+    - default: false
+      deviceClass: hdd
+      name: volumes
+      erasureCoded:
+        codingChunks: 0
+        dataChunks: 0
+      replicated:
+        size: 3
+        targetSizeRatio: 4.0
+      role: volumes
+    - default: false
+      deviceClass: hdd
+      name: vms
+      erasureCoded:
+        codingChunks: 0
+        dataChunks: 0
+      replicated:
+        size: 2
+        targetSizeRatio: 1.0
+      role: vms
+    - default: false
+      deviceClass: hdd
+      name: backup
+      erasureCoded:
+        codingChunks: 0
+        dataChunks: 0
+      replicated:
+        size: 2
+        targetSizeRatio: 1.0
+      role: backup
+    - default: false
+      deviceClass: hdd
+      name: images
+      erasureCoded:
+        codingChunks: 0
+        dataChunks: 0
+      replicated:
+        size: 2
+        targetSizeRatio: 1.5
+      role: images
+    - default: false
+      deviceClass: hdd
+      name: other
+      erasureCoded:
+        codingChunks: 0
+        dataChunks: 0
+      replicated:
+        size: 2
+        targetSizeRatio: 0.1
+      role: other
+    ##################
+    # Nodes List
+    ###################
+    nodes:
+      CLUSTER_NAME-ctl-01:
+        roles:
+        - mon
+        - mgr
+      CLUSTER_NAME-ctl-02:
+        roles:
+        - mon
+        - mgr
+      CLUSTER_NAME-ctl-03:
+        roles:
+        - mon
+        - mgr
+      CLUSTER_NAME-cmp-01:
+        roles: []
+        storageDevices:
+        - name: sdc
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme0n1
+        - name: sdd
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme0n1
+        - name: sde
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme0n1
+        - name: sdf
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme0n1
+        - name: sdg
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme0n1
+        - name: sdh
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme0n1
+        - name: sdi
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme1n1
+        - name: sdj
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme1n1
+        - name: sdk
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme1n1
+        - name: sdl
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme1n1
+        - name: sdm
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme1n1
+        - name: sdn
+          config:
+            osdsPerDevice: "1"
+            deviceClass: hdd
+            metadataDevice: nvme1n1

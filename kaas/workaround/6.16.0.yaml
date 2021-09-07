@@ -1,0 +1,269 @@
+apiVersion: kaas.mirantis.com/v1alpha1
+kind: ClusterRelease
+metadata:
+  name: mos-6-16-0-21-3
+spec:
+  lcmType: ucp
+  version: 6.16.0+21.3
+  description: |
+    kubernetes: 1.18.10
+    containerd: 1.3.4
+    docker-engine: ee-stable-19.03.14
+    coredns: 1.7.0
+    etcd: v3.4.3
+    calico: v3.14.1
+    openstack-operator: 0.3.33
+    tungstenfabric-operator: 0.3.1
+  releaseNotes:
+  - version: 6.16.0+21.3
+    notes:
+    - text: TF SRIOV full support
+    - text: TF control plane traffic on arbitrary network interface
+    - text: Technical Preview of TF R2011 with OpenStack Victoria (for greenfield deployments only)
+    - text: Technical Preview of LVM+iSCSI backend for block storage
+  helm:
+    releases:
+    - name: metallb
+      chartURL: core/helm/metallb-1.22.4.tgz
+      version: 1.22.4
+      namespace: metallb-system
+      values: {}
+    - name: stacklight
+      chartURL: stacklight/helm/stacklight-0.1.2-mcp-492.tgz
+      version: 0.1.2-mcp-492
+      namespace: stacklight
+      requiresPersistentVolumes: true
+      requires:
+      - local-volume-provisioner
+      localVolumes:
+      - name: elasticsearch-data
+        bindMounts:
+        - volPerNode: 1
+      - name: prometheus-data
+        bindMounts:
+        - volPerNode: 1
+      - name: alertmanager-data
+        bindMounts:
+        - volPerNode: 1
+      - name: postgresql-db
+        bindMounts:
+        - volPerNode: 2
+      values:
+        createHelmBundleCRD: true
+        tillerImage: lcm/helm/tiller:v2.16.11-40
+        helmControllerImage: lcm/lcm-controller:v0.2.0-349-g4870b7f5
+        logging:
+          enabled: false
+        helm:
+          dedicatedHelmController: false
+        openstack:
+          enabled: true
+      required: true
+    - name: ceph-controller
+      chartURL: ceph/helm/ceph-operator-1.0.0-mcp-271.tgz
+      version: 1.0.0-mcp-271
+      namespace: ceph
+      values: {}
+      required: true
+    - name: local-volume-provisioner
+      chartURL: bm/helm/local-volume-provisioner-1.0.6-mcp.tgz
+      version: 1.0.6-mcp
+      namespace: kube-system
+      values: {}
+    - name: metrics-server
+      chartURL: core/helm/metrics-server-1.22.4.tgz
+      version: 1.22.4
+      namespace: kube-system
+      values:
+        image:
+          tag: v0.3.6-1
+      required: true
+    - name: descheduler
+      chartURL: core/helm/descheduler-1.22.4.tgz
+      version: 1.22.4
+      namespace: kube-system
+      values:
+        image:
+          tag: v0.8.0
+      required: true
+    - name: openstack-operator
+      chartURL: openstack/helm/openstack-controller/openstack-operator-0.3.33.tgz
+      version: 0.3.33
+      namespace: osh-system
+      values:
+        image:
+          tag: 0.3.33
+      required: true
+      requires:
+      - local-volume-provisioner
+      localVolumes:
+      - name: bind-mounts
+        bindMounts:
+        # mariadb - 1 openstack-control-plane=enabled
+        # etcd-coordination - 1 openstack-control-plane=enabled
+        # redis-telemetry - 1 openstack-control-plane=enabled
+        - volPerNode: 3
+    - name: os-redis-operator
+      chartURL: openstack/helm/redis-operator/redisoperator-3.1.0-mcp-2.tgz
+      version: 3.1.0-mcp-2
+      namespace: openstack-redis
+      values:
+        image:
+          name: redis-operator
+          repository: openstack/extra
+          tag: v1.0.0
+        rbac:
+          apiVersion: v1
+          install: true
+        node_affinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: openstack-control-plane
+                operator: In
+                values:
+                - enabled
+      required: true
+    - name: tungstenfabric-operator
+      chartURL: tungsten/helm/tungstenfabric-operator-0.3.1.tgz
+      version: 0.3.1
+      namespace: tf
+      values:
+        image:
+          tag: 0.3.1
+      required: true
+      requiresPersistentVolumes: true
+      requires:
+        - local-volume-provisioner
+      localVolumes:
+        - name: bind-mounts
+          bindMounts:
+            # cassandra - 2 tfconfigdb=enabled;tfanalyticsdb=enabled
+            # zookeeper - 2 tfconfigdb=enabled;tfanalyticsdb=enabled
+            # kafka - 1     tfanalyticsdb=enabled
+            - volPerNode: 5
+    - name: managed-lcm-api
+      chartURL: core/helm/managed-lcm-api-1.22.4.tgz
+      version: 1.22.4
+      namespace: default
+      values: {}
+      required: true
+    - name: storage-discovery
+      chartURL: core/helm/storage-discovery-1.23.2.tgz
+      version: 1.23.2
+      namespace: storage-discovery
+      values:
+        image:
+          tag: 1.23.2
+  agent:
+    version: v0.2.0-349-g4870b7f5
+    downloadURL: lcm/bin/lcm-agent/v0.2.0-349-g4870b7f5/lcm-agent
+    sha256: dad810467956f0ddfd3d7cfd981ec4bd42e0202514f28aadb289c6cd527195c5
+  images:
+    helmController: lcm/lcm-controller:v0.2.0-349-g4870b7f5
+    tiller: lcm/helm/tiller:v2.16.11-40
+    ucpSourceRepo: lcm/docker
+    ucpTargetRepo: mirantis
+  machineTypes:
+    worker:
+    - &downloadLcmAnsible
+      name: download lcm ansible
+      params:
+        path: /root/lcm-ansible-v0.7.0-9-g30acaae
+        url: lcm/bin/lcm-ansible/v0.7.0-9-g30acaae/lcm-ansible.tar.gz
+        sha256: 9b70ebea21a44cf382f603ebfa94f1781db89d0ae1d6ae4d75a42314cea2cc09
+      runner: downloader
+      version: "1"
+      phase: prepare
+    - &installProxy
+      name: install proxy
+      params:
+        script: /root/lcm-ansible-v0.7.0-9-g30acaae/install_proxy.sh
+        kaas_ubuntu_repo: kaas/ubuntu-2020-07-30-013349
+      runner: bash
+      version: "1"
+      phase: prepare
+    - &setup
+      name: setup
+      params:
+        script: /root/lcm-ansible-v0.7.0-9-g30acaae/setup.sh
+        kaas_ubuntu_repo: kaas/ubuntu-2020-07-30-013349
+      runner: bash
+      version: "1"
+      phase: prepare
+    - &preDownload
+      name: pre download
+      params:
+        ansible: /usr/bin/ansible-playbook
+        inventoryTemplate: /root/lcm-ansible-v0.7.0-9-g30acaae/inventory/inventory-docker.tmpl
+        playbook: /root/lcm-ansible-v0.7.0-9-g30acaae/download_ucp.yml
+        ucp_pre_pull_images: "true"
+        openstack_deployment: "true"
+        controlNodeIP: "{{ .ControlNodeIP }}"
+        ucp_tag: 3.3.6
+        dedicated_controlplane: "{{ .IsDedicatedMaster }}"
+        docker_engine_version: "{ Debian: ee-stable-19.03.14, RedHat: ee-stable-19.03.14 }"
+      phase: prepare
+      runner: ansible
+      version: "1"
+    - &deploy
+      name: deploy
+      params:
+        playbook: /root/lcm-ansible-v0.7.0-9-g30acaae/reconcile.yml
+        ansible: /usr/bin/ansible-playbook
+        inventoryTemplate: /root/lcm-ansible-v0.7.0-9-g30acaae/inventory/inventory-docker.tmpl
+        openstack_deployment: "true"
+        controlNodeIP: "{{ .ControlNodeIP }}"
+        ucp_tag: 3.3.6
+        engine_disable_upgrade: "true"
+        dedicated_controlplane: "{{ .IsDedicatedMaster }}"
+        docker_engine_version: "{ Debian: ee-stable-19.03.14, RedHat: ee-stable-19.03.14 }"
+        ucp_custom_kube_controller_manager_flags: "--leader-elect-lease-duration=120s,--leader-elect-renew-deadline=60s"
+        ucp_custom_kube_scheduler_flags: "--leader-elect-lease-duration=120s,--leader-elect-renew-deadline=60s"
+        kubelet_max_pods: "150"
+      runner: ansible
+      version: "1"
+      phase: deploy
+    control:
+    - *downloadLcmAnsible
+    - *installProxy
+    - *setup
+    - *preDownload
+    - *deploy
+  allowedNodeLabels:
+  - key: stacklight
+    value: enabled
+    displayName: Stacklight
+  - key: openstack-control-plane
+    value: enabled
+    displayName: OpenStack control plane
+  - key: openstack-compute-node
+    value: enabled
+    displayName: OpenStack compute
+  - key: openstack-gateway
+    value: enabled
+    displayName: OpenStack gateway
+  - key: openvswitch
+    value: enabled
+    displayName: Open vSwitch
+  - key: tfanalytics
+    value: enabled
+    displayName: Tungsten Fabric Analytics
+  - key: tfconfig
+    value: enabled
+    displayName: Tungsten Fabric Config
+  - key: tfcontrol
+    value: enabled
+    displayName: Tungsten Fabric Control
+  - key: tfwebui
+    value: enabled
+    displayName: Tungsten Fabric web UI
+  - key: tfconfigdb
+    value: enabled
+    displayName: Tungsten Fabric Config database
+  - key: tfanalyticsdb
+    value: enabled
+    displayName: Tungsten Fabric Analytics database
+  - key: tfvrouter
+    value: enabled
+    displayName: Tungsten Fabric vRouter

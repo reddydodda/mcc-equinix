@@ -1,0 +1,51 @@
+apiVersion: kaas.mirantis.com/v1alpha1
+kind: KaaSCephCluster
+metadata:
+  name: CLUSTER_NAME
+  namespace: NAMESPACE
+spec:
+  k8sCluster:
+    name: CLUSTER_NAME
+    namespace: NAMESPACE
+  cephClusterSpec:
+    external:
+      adminSecret: ""
+      enable: false
+      fsid: ""
+      monData: ""
+    network:
+      clusterNet: 10.0.0.0/8
+      publicNet: 10.0.0.0/8
+    pools:
+    - default: true
+      deviceClass: ssd
+      erasureCoded:
+        codingChunks: 0
+        dataChunks: 0
+      name: kubernetes
+      replicated:
+        size: 2
+      role: kubernetes-ssd
+    nodes:
+      CLUSTER_NAME-master-01:
+        roles:
+        - mon
+        - mgr
+      CLUSTER_NAME-master-02:
+        roles:
+        - mon
+        - mgr
+      CLUSTER_NAME-master-03:
+        roles:
+        - mon
+        - mgr
+      CLUSTER_NAME-worker-01:
+        storageDevices:
+        - name: sdb
+          config:
+            osdsPerDevice: "1"
+            deviceClass: ssd
+        - name: sdc
+          config:
+            osdsPerDevice: "1"
+            deviceClass: ssd

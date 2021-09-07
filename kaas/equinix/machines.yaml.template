@@ -1,0 +1,33 @@
+apiVersion: "cluster.k8s.io/v1alpha1"
+kind: MachineList
+items:
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: kaas-mgmt-controlplane-0
+    labels:
+      kaas.mirantis.com/provider: equinixmetal
+      cluster.sigs.k8s.io/control-plane: "true"
+  spec: &cp_spec
+    providerSpec:
+      value: &cp_value
+        apiVersion: equinix.kaas.mirantis.com/v1alpha1
+        kind: EquinixMetalMachineProviderSpec
+        OS: ubuntu_18_04
+        machineType: EQUINIX_MACHINE_TYPE
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: kaas-mgmt-controlplane-1
+    labels:
+      kaas.mirantis.com/provider: equinixmetal
+      cluster.sigs.k8s.io/control-plane: "true"
+  spec: *cp_spec
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: kaas-mgmt-controlplane-2
+    labels:
+      kaas.mirantis.com/provider: equinixmetal
+      cluster.sigs.k8s.io/control-plane: "true"
+  spec: *cp_spec

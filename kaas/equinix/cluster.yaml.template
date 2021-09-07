@@ -1,0 +1,50 @@
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Cluster
+metadata:
+  name: kaas-mgmt
+  labels:
+    kaas.mirantis.com/provider: equinixmetal
+spec:
+  clusterNetwork:
+    services:
+      cidrBlocks:
+        - 172.21.0.0/18
+    pods:
+      cidrBlocks:
+        - 172.21.128.0/17
+  providerSpec:
+    value:
+      apiVersion: equinix.kaas.mirantis.com/v1alpha1
+      kind: EquinixMetalClusterProviderSpec
+      # Set from KaaSRelease during bootstrap process
+      # release:
+      facility: EQUINIX_FACILITY
+      dedicatedControlPlane: false
+      credentials: cloud-config
+      helmReleases:
+        - name: stacklight
+          values:
+            telemetry:
+              metricCollector:
+                enabled: true
+      kaas:
+        # Set from KaaSRelease during bootstrap process
+        # release:
+        regional:
+        - provider: equinixmetal
+        - provider: byo
+        management:
+          enabled: true
+          helmReleases:
+            - name: kaas-ui
+              values:
+                keycloak:
+                  realm: iam
+                  clientId: kaas
+            - name: iam
+              requiresPersistentVolumes: true
+              values:
+                keycloak:
+                  keycloak:
+                    pvc:
+                      enabled: false

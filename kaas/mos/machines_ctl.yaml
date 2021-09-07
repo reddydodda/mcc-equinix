@@ -1,0 +1,51 @@
+apiVersion: "cluster.k8s.io/v1alpha1"
+kind: MachineList
+items:
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: CLUSTER_NAME-ctl-01
+    namespace: NAMESPACE
+    labels:
+      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/region: region-one
+      cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
+  spec: &cp_spec
+    providerSpec:
+      value: &cp_value
+        apiVersion: equinix.kaas.mirantis.com/v1alpha1
+        kind: EquinixMetalMachineProviderSpec
+        OS: ubuntu_18_04
+        machineType: EQUINIX_MACHINE_TYPE_CTL
+        ceph:
+          managerMonitor: true
+          storage: false
+        nodeLabels:
+        - key: stacklight
+          value: enabled
+        - key: openstack-control-plane
+          value: enabled
+        - key: openstack-gateway
+          value: enabled
+        - key: openvswitch
+          value: enabled
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: CLUSTER_NAME-ctl-02
+    namespace: NAMESPACE
+    labels:
+      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/region: region-one
+      cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
+  spec: *cp_spec
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: CLUSTER_NAME-ctl-03
+    namespace: NAMESPACE
+    labels:
+      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/region: region-one
+      cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
+  spec: *cp_spec

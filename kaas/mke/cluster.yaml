@@ -1,0 +1,53 @@
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Cluster
+metadata:
+  labels:
+    kaas.mirantis.com/provider: equinixmetal
+    kaas.mirantis.com/region: region-one
+  name: CLUSTER_NAME
+  namespace: NAMESPACE
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 172.21.128.0/17
+    services:
+      cidrBlocks:
+      - 172.21.0.0/18
+  providerSpec:
+    value:
+      apiVersion: equinix.kaas.mirantis.com/v1alpha1
+      kind: EquinixMetalClusterProviderSpec
+      nodeCidr: 10.10.10.0/24
+      release: CLUSTER_RELEASE
+      credentials: cloud-config
+      facility: EQUINIX_FACILITY
+      dedicatedControlPlane: DEDICATED_CONTROL_PLANE
+      ceph:
+        manualConfiguration: true
+      helmReleases:
+      - name: stacklight
+        values:
+          alertmanagerSimpleConfig:
+            email:
+              enabled: false
+            slack:
+              enabled: false
+          elasticsearch:
+            logstashRetentionTime: "30"
+            persistentVolumeClaimSize: 30Gi
+          highAvailabilityEnabled: true
+          logging:
+            enabled: true
+            level: INFO
+          prometheusServer:
+            customAlerts: []
+            persistentVolumeClaimSize: 16Gi
+            retentionSize: 15GB
+            retentionTime: 15d
+            watchDogAlertEnabled: true
+      kaas:
+        management:
+          enabled: false
+      publicKeys:
+      - name: bootstrap-key
