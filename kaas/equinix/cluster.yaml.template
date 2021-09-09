@@ -33,6 +33,10 @@ spec:
         regional:
         - provider: equinixmetal
         - provider: byo
+        - provider: aws
+        - provider: openstack
+        - provider: azure
+        - provider: vsphere
         management:
           enabled: true
           helmReleases:
