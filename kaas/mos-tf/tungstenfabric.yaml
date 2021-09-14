@@ -1,0 +1,17 @@
+apiVersion: operator.tf.mirantis.com/v1alpha1
+kind: TFOperator
+metadata:
+  name: openstack-tf
+  namespace: tf
+spec:
+  settings:
+    orchestrator: openstack
+    dataStorageClass: tungstenfabric-operator-bind-mounts
+  #controllers:
+  #  tf-vrouter:
+  #    agent:
+  #      containers:
+  #      - name: agent
+  #        env:
+  #        - name: VROUTER_GATEWAY
+  #          value: 10.5.15.1

@@ -21,6 +21,6 @@ items:
         - displayName: OpenStack compute
           key: openstack-compute-node
           value: enabled
-        - displayName: Open vSwitch
-          key: openvswitch
+        - displayName: TF vRouter
+          key: tfvrouter
           value: enabled

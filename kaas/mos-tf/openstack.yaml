@@ -1,0 +1,99 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+spec:
+  draft: false
+  openstack_version: ussuri
+  preset: compute-tf
+  size: tiny
+  internal_domain_name: cluster.local
+  public_domain_name: it.just.works
+  local_volume_storage_class: openstack-operator-bind-mounts
+  persistent_volume_storage_class: kubernetes-hdd
+  features:
+    services:
+    - alarming
+    - event
+    - metering
+    - metric
+    - object-storage
+    - tempest
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+        api_key: |-
+          -----BEGIN RSA PRIVATE KEY-----
+          -----END RSA PRIVATE KEY-----
+        ca_cert: |-
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+    keystone:
+      keycloak:
+        enabled: true
+        oidc:
+          OIDCOAuthSSLValidateServer: false
+          OIDCSSLValidateServer: false
+        url: https://<<KEYCLOAK_IP>>
+    logging:
+      neutron:
+        level: DEBUG
+    neutron:
+      backend: tungstenfabric
+      tunnel_interface: enp216s0f1.100
+      floating_network:
+        enabled: true
+        subnet:
+          gateway: 192.168.101.1
+          pool_end: 192.168.101.250
+          pool_start: 192.168.101.100
+          range: 192.168.101.0/24
+    nova:
+      live_migration_interface: vhost0
+      images:
+        backend: ceph
+    ## Barbican
+    barbican:
+      backends:
+        vault:
+          enabled: false
+    telemetry:
+      mode: autoscaling
+    stacklight:
+      user:
+        password: stacklight
+  ###########
+  # Services
+  ##########
+  services:
+    load-balancer:
+      octavia:
+        values:
+          conf:
+            octavia:
+              api_settings:
+                default_provider_driver: amphora
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+    tempest:
+      tempest:
+        values:
+          conf:
+            script: cat /etc/tempest/tempest.conf; tempest run --config-file /etc/tempest/tempest.conf
+              --concurrency 4 --blacklist-file /etc/tempest/test-blacklist --regex
+              test || true; stestr last --subunit > /var/lib/tempest/data/tempest_report

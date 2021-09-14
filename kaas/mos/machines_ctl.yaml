@@ -17,9 +17,6 @@ items:
         kind: EquinixMetalMachineProviderSpec
         OS: ubuntu_18_04
         machineType: EQUINIX_MACHINE_TYPE_CTL
-        ceph:
-          managerMonitor: true
-          storage: false
         nodeLabels:
         - key: stacklight
           value: enabled
