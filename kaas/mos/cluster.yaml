@@ -28,6 +28,11 @@ spec:
       helmReleases:
       - name: stacklight
         values:
+          clusterSize: small
+          ceph:
+            enabled: true
+          sslCertificateMonitoring:
+            enabled: false
           alertmanagerSimpleConfig:
             email:
               enabled: false

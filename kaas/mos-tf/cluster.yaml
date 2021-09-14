@@ -28,6 +28,13 @@ spec:
       helmReleases:
       - name: stacklight
         values:
+          clusterSize: small
+          ceph:
+            enabled: true
+          sslCertificateMonitoring:
+            enabled: false
+          tungstenFabricMonitoring:
+            enabled: true
           alertmanagerSimpleConfig:
             email:
               enabled: false
