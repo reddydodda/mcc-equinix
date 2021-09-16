@@ -112,9 +112,9 @@ sudo usermod -aG docker $USER
   kubectl get pods -n rook-ceph
   ```
   
- ## Deploy MOS Child cluster
+ ## Deploy MOS-OVS Child cluster
 
- ### Deploy MKE child cluster and Ceph for MOS 
+ ### Deploy MKE child cluster and Ceph for MOS-OVS 
  
 ```shell
 
