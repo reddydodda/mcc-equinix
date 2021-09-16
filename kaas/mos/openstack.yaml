@@ -63,6 +63,8 @@ spec:
           range: 192.168.101.0/24
     nova:
       live_migration_interface: enp216s0f1.100
+      images:
+        backend: ceph
     telemetry:
       mode: autoscaling
     stacklight:
