@@ -12,7 +12,7 @@ export EQUINIX_MACHINE_TYPE_WORKER=c3.medium.x86
 export MACHINES_AMOUNT=9
 
 ###
-export CLUSTER_RELEASE=mke-7-0-0-3-4-0
+export CLUSTER_RELEASE=mke-7-2-0-3-4-5
 export CLUSTER_NAME=mke01
 export NAMESPACE=mke
 export DEDICATED_CONTROL_PLANE=true
