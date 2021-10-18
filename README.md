@@ -73,8 +73,8 @@ sudo usermod -aG docker $USER
 
    export KUBECONFIG=$PWD/mcc/kaas-bootstrap/kubeconfig
    
-   ./mcc/kaas-bootstrap/kaas bootstrap user add --username writer --roles writer
-   ./mcc/kaas-bootstrap/kaas bootstrap user add --username reader --roles reader
+   ./mcc/kaas-bootstrap/container-cloud bootstrap user add --username writer --roles writer
+   ./mcc/kaas-bootstrap/container-cloud bootstrap user add --username reader --roles reader
 
 
 ```

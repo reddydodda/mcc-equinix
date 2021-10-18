@@ -12,7 +12,7 @@ export EQUINIX_MACHINE_TYPE_CTL=c3.medium.x86
 export EQUINIX_MACHINE_TYPE_CMP=s3.xlarge.x86
 
 ###
-export CLUSTER_RELEASE=mos-6-18-0-21-4
+export CLUSTER_RELEASE=mos-6-19-0-21-5
 export CLUSTER_NAME=mostest
 export NAMESPACE=mos
 export DEDICATED_CONTROL_PLANE=true
