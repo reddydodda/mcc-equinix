@@ -18,7 +18,7 @@ mkdir -p ${home_dir}
 wget https://binary.mirantis.com/releases/get_container_cloud.sh -O $home_dir/get_container_cloud.sh
 chmod 0755 $home_dir/get_container_cloud.sh
 
-./${home_dir}/get_container_cloud.sh
+.${home_dir}/get_container_cloud.sh
 
 mkdir $home_dir/kaas-bootstrap/templates.backup
 cp -r $home_dir/kaas-bootstrap/templates/*  $home_dir/kaas-bootstrap/templates.backup/
