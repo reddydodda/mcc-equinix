@@ -7,7 +7,7 @@ kaas_dir=$PWD
 ###############
 export SET_EQUINIX_USER_API_TOKEN="<<USER_API_TOKEN>>"
 export SET_EQUINIX_PROJECT_ID="<<PROJECT_ID>>"
-export EQUINIX_FACILITY=da1
+export EQUINIX_FACILITY=da
 export EQUINIX_MACHINE_TYPE=c3.small.x86
 export MACHINES_COUNT=3
 #######################
