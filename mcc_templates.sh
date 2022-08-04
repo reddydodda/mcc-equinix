@@ -18,49 +18,71 @@ mkdir -p ${home_dir}
 wget https://binary.mirantis.com/releases/get_container_cloud.sh -O $home_dir/get_container_cloud.sh
 chmod 0755 $home_dir/get_container_cloud.sh
 
-cd $home_dir
-./get_container_cloud.sh
+./${home_dir}/get_container_cloud.sh
 
 mkdir $home_dir/kaas-bootstrap/templates.backup
 cp -r $home_dir/kaas-bootstrap/templates/*  $home_dir/kaas-bootstrap/templates.backup/
 
-#git add *
-#git commit -m "Changes for ${cloud_name}"
+git add *
+git commit -m "Changes for ${cloud_name}"
 
 #############################
 # copy licence and templates
 #############################
 
 cp ${kaas_dir}/kaas/mirantis.lic $home_dir/kaas-bootstrap/
-cp -r ${kaas_dir}/kaas/equinix/ $home_dir/kaas-bootstrap/templates/
+cp -r ${kaas_dir}/kaas/equinixmetalv2/ $home_dir/kaas-bootstrap/templates/
 ##
 source ${kaas_dir}/variables_mcc.sh
+
+########################
+# Get network details
+########################
+subnet_pxe=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[].subnet" | awk -F "." '{print $1"."$2"."$3"}')
+
+export SET_EQUINIX_VLAN_ID=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[].vlan_id")
+
+export KAAS_BM_PXE_BRIDGE="br0"
+export KAAS_BM_PXE_IP="${subnet_pxe}.5"
+export KAAS_BM_PXE_MASK="24"
+
+export SET_LB_HOST="${subnet_pxe}.10"
+export SET_EQUINIX_METALLB_RANGES="${subnet_pxe}.200-${subnet_pxe}.240"
+export SET_EQUINIX_NETWORK_CIDR="${subnet_pxe}.10/24"
+export SET_EQUINIX_NETWORK_GATEWAY="${subnet_pxe}.1"
+export SET_EQUINIX_NETWORK_DHCP_RANGES="${subnet_pxe}.11-${subnet_pxe}.49"
+export SET_EQUINIX_CIDR_INCLUDE_RANGES="${subnet_pxe}.51-${subnet_pxe}.99"
+export SET_EQUINIX_CIDR_EXCLUDE_RANGES="${subnet_pxe}.1-${subnet_pxe}.50"
+export SET_EQUINIX_NETWORK_NAMESERVERS=""
+
+export SET_EQUINIX_NTP_SERVER="${subnet_pxe}.1"
+
 ###################
 # Update templates
 ###################
 
-sed -i "s|EQUINIX_FACILITY|${EQUINIX_FACILITY}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_VLAN_ID|${SET_EQUINIX_VLAN_ID}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_LB_HOST|${SET_LB_HOST}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_METALLB_RANGES|${SET_EQUINIX_METALLB_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_NETWORK_CIDR|${SET_EQUINIX_NETWORK_CIDR}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_NETWORK_GATEWAY|${SET_EQUINIX_NETWORK_GATEWAY}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_NETWORK_DHCP_RANGES|${SET_EQUINIX_NETWORK_DHCP_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_CIDR_INCLUDE_RANGES|${SET_EQUINIX_CIDR_INCLUDE_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_CIDR_EXCLUDE_RANGES|${SET_EQUINIX_CIDR_EXCLUDE_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_NETWORK_NAMESERVERS|${SET_EQUINIX_NETWORK_NAMESERVERS}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
-sed -i "s|SET_EQUINIX_NTP_SERVER|${SET_EQUINIX_NTP_SERVER}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|EQUINIX_FACILITY|${EQUINIX_FACILITY}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_VLAN_ID|${SET_EQUINIX_VLAN_ID}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_LB_HOST|${SET_LB_HOST}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_METALLB_RANGES|${SET_EQUINIX_METALLB_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_CIDR|${SET_EQUINIX_NETWORK_CIDR}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_GATEWAY|${SET_EQUINIX_NETWORK_GATEWAY}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_DHCP_RANGES|${SET_EQUINIX_NETWORK_DHCP_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_CIDR_INCLUDE_RANGES|${SET_EQUINIX_CIDR_INCLUDE_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_CIDR_EXCLUDE_RANGES|${SET_EQUINIX_CIDR_EXCLUDE_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_NAMESERVERS|${SET_EQUINIX_NETWORK_NAMESERVERS}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NTP_SERVER|${SET_EQUINIX_NTP_SERVER}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
 
 
-sed -i "s|SET_EQUINIX_PROJECT_ID|${SET_EQUINIX_PROJECT_ID}|g" $home_dir/kaas-bootstrap/templates/equinixv2/equinix-config.yaml.template
-sed -i "s|SET_EQUINIX_USER_API_TOKEN|${SET_EQUINIX_USER_API_TOKEN}|g" $home_dir/kaas-bootstrap/templates/equinixv2/equinix-config.yaml.template
-sed -i "s|EQUINIX_MACHINE_TYPE|${EQUINIX_MACHINE_TYPE}|g" $home_dir/kaas-bootstrap/templates/equinixv2/machines.yaml.template
+sed -i "s|SET_EQUINIX_PROJECT_ID|${SET_EQUINIX_PROJECT_ID}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/equinix-config.yaml.template
+sed -i "s|SET_EQUINIX_USER_API_TOKEN|${SET_EQUINIX_USER_API_TOKEN}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/equinix-config.yaml.template
+sed -i "s|EQUINIX_MACHINE_TYPE|${EQUINIX_MACHINE_TYPE}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/machines.yaml.template
 
 
 ############
 # SSH key
 ############
-sed -i "s|BOOTSTRAP_SSH_PUBLIC_KEY|${BOOTSTRAP_SSH_PUBLIC_KEY}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|BOOTSTRAP_SSH_PUBLIC_KEY|${BOOTSTRAP_SSH_PUBLIC_KEY}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
 ###################
 # bootstrap.env
 ###################
