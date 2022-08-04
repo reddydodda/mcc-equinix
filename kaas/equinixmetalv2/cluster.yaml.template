@@ -43,8 +43,8 @@ spec:
           - SET_EQUINIX_CIDR_INCLUDE_RANGES
         excludeRanges:
           - SET_EQUINIX_CIDR_EXCLUDE_RANGES
-        #nameservers:
-        #  - SET_EQUINIX_NETWORK_NAMESERVERS
+        nameservers:
+          - SET_EQUINIX_NETWORK_NAMESERVERS
       kaas:
         # Set from KaaSRelease during bootstrap process
         # release:

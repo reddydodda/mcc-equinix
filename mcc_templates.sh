@@ -61,7 +61,7 @@ export SET_EQUINIX_NETWORK_GATEWAY="${subnet_pxe}.1"
 export SET_EQUINIX_NETWORK_DHCP_RANGES="${subnet_pxe}.11-${subnet_pxe}.49"
 export SET_EQUINIX_CIDR_INCLUDE_RANGES="${subnet_pxe}.51-${subnet_pxe}.99"
 export SET_EQUINIX_CIDR_EXCLUDE_RANGES="${subnet_pxe}.1-${subnet_pxe}.50"
-export SET_EQUINIX_NETWORK_NAMESERVERS=""
+export SET_EQUINIX_NETWORK_NAMESERVERS="147.75.207.208"
 
 export SET_EQUINIX_NTP_SERVER="${subnet_pxe}.1"
 
@@ -107,3 +107,12 @@ EOF
 echo "Completed Changes"
 
 fi
+
+###################################
+# check Metal server availability
+###################################
+export METAL_AUTH_TOKEN=${SET_EQUINIX_USER_API_TOKEN}
+
+$kaas_dir/tools/metal capacity check --facility ${EQUINIX_FACILITY} --plan ${EQUINIX_MACHINE_TYPE} --quantity ${MACHINES_COUNT}
+
+

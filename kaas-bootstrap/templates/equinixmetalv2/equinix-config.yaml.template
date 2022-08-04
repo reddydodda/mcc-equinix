@@ -1,9 +1,0 @@
----
-apiVersion: kaas.mirantis.com/v1alpha1
-kind: EquinixMetalCredential
-metadata:
-  name: cloud-config
-spec:
-  projectID: SET_EQUINIX_PROJECT_ID
-  apiToken:
-    value: SET_EQUINIX_USER_API_TOKEN
