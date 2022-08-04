@@ -1,0 +1,87 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: COMMON_NAME
+  namespace: CNF_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: COMMON_NAME
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: COMMON_NAME
+subjects:
+  - kind: ServiceAccount
+    name: COMMON_NAME
+    namespace: CNF_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: COMMON_NAME
+  namespace: CNF_NAMESPACE
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: COMMON_NAME
+  namespace: CNF_NAMESPACE
+spec:
+  hostNetwork: true
+  restartPolicy: Never
+  serviceAccountName: COMMON_NAME
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: In
+                values:
+                  - ""
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  containers:
+    - command:
+        - /bin/bash
+        - -c
+        - set -o pipefail && /entrypoint.sh | tee POD_REPORT_DIR/conformance.log
+      name: conformance
+      imagePullPolicy: Always
+      securityContext:
+        privileged: true
+      env:
+        # Uncomment to use FOCUS for conformance runs
+        #    - name: FOCUS
+        #      value: "Conformance"
+        #    - name: CONCURRENCY
+        - name: REPORT_DIR
+          value: POD_REPORT_DIR
+        - name: KUBECONFIG
+          value: /config/CHILD_CONF_FILENAME
+      image: CNF_IMAGE
+      volumeMounts:
+        - mountPath: POD_REPORT_DIR
+          name: results-COMMON_NAME
+          mountPropagation: Bidirectional
+        - mountPath: /config
+          name: kubeconfigs
+          readOnly: true
+  volumes:
+    - name: results-COMMON_NAME
+      persistentVolumeClaim:
+        claimName: results-COMMON_NAME
+    - name: kubeconfigs
+      secret:
+        secretName: kubeconfig
