@@ -43,7 +43,7 @@ source ${kaas_dir}/variables_mcc.sh
 
 subnet_pxe=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[].subnet" | awk -F "." '{print $1"."$2"."$3}')
 
-if [ -Z ${subnet_pxe} ]; then
+if [ -Z "${subnet_pxe}" ]; then
 	echo "Equinix Facility is not valid"
 	exit 0
 else
