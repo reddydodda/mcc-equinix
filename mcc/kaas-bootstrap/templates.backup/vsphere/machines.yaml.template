@@ -1,0 +1,44 @@
+apiVersion: "cluster.k8s.io/v1alpha1"
+kind: MachineList
+items:
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: master-0
+    labels: &cp_labels
+      kaas.mirantis.com/provider: vsphere
+      cluster.sigs.k8s.io/control-plane: "true"
+      cluster.sigs.k8s.io/cluster-name: kaas-mgmt
+  spec:
+    providerSpec:
+      value: &cp_value
+        apiVersion: vsphere.cluster.k8s.io/v1alpha1
+        kind: VsphereMachineProviderSpec
+        rhelLicense: kaas-mgmt-rhel-license
+        numCPUs: 8
+        memoryMiB: 24576
+        diskGiB: 120
+        # filepath format started with slash without trailing slash
+        template: SET_VSPHERE_TEMPLATE_PATH
+
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: master-1
+    labels:
+      <<: *cp_labels
+  spec:
+    providerSpec:
+      value:
+        <<: *cp_value
+
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: master-2
+    labels:
+      <<: *cp_labels
+  spec:
+    providerSpec:
+      value:
+        <<: *cp_value

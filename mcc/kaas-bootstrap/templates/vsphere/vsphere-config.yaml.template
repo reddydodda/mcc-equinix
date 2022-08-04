@@ -1,0 +1,19 @@
+---
+apiVersion: kaas.mirantis.com/v1alpha1
+kind: VsphereCredential
+metadata:
+  name: cloud-config
+spec:
+  vsphere:
+    server: SET_VSPHERE_SERVER
+    port: SET_VSPHERE_SERVER_PORT
+    insecure: SET_VSPHERE_SERVER_INSECURE
+    datacenter: SET_VSPHERE_DATACENTER
+  clusterApi:
+    username: SET_VSPHERE_CAPI_PROVIDER_USERNAME
+    password:
+      value: SET_VSPHERE_CAPI_PROVIDER_PASSWORD
+  cloudProvider:
+    username: SET_VSPHERE_CLOUD_PROVIDER_USERNAME
+    password:
+      value: SET_VSPHERE_CLOUD_PROVIDER_PASSWORD

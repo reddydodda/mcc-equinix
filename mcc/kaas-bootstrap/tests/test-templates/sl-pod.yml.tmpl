@@ -1,0 +1,89 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: COMMON_NAME
+  namespace: TEST_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: COMMON_NAME
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: COMMON_NAME
+subjects:
+  - kind: ServiceAccount
+    name: COMMON_NAME
+    namespace: TEST_NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: COMMON_NAME
+  namespace: TEST_NAMESPACE
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: COMMON_NAME
+  namespace: TEST_NAMESPACE
+spec:
+  hostNetwork: true
+  restartPolicy: Never
+  serviceAccountName: COMMON_NAME
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: In
+                values:
+                  - ""
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  containers:
+    - command:
+        - /stacklight-pytest/entrypoint.sh
+      name: sl-tests
+      imagePullPolicy: Always
+      securityContext:
+        privileged: true
+      env:
+        - name: KUBECONFIG
+          value: /config/CONF_FILENAME
+        - name: KEYCLOAK_URL
+          value: KEYCLOAK_VALUE
+        - name: URL
+          value: URL_VALUE
+        - name: TOKEN
+          value: TOKEN_VALUE
+        - name: SL_NAMESPACE
+          value: SL_NAMESPACE_VALUE
+        - name: REPORT_DIR
+          value: POD_REPORT_DIR
+      image: IMAGE
+      volumeMounts:
+        - mountPath: POD_REPORT_DIR
+          name: results-COMMON_NAME
+          mountPropagation: Bidirectional
+        - mountPath: /config
+          name: kubeconfigs
+          readOnly: true
+  volumes:
+    - name: results-COMMON_NAME
+      persistentVolumeClaim:
+        claimName: results-COMMON_NAME
+    - name: kubeconfigs
+      secret:
+        secretName: kubeconfig
