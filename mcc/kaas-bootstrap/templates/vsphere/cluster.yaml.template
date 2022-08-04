@@ -1,0 +1,70 @@
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Cluster
+metadata:
+  name: kaas-mgmt
+  labels:
+    kaas.mirantis.com/provider: vsphere
+    kaas.mirantis.com/region: region-one
+spec:
+  clusterNetwork:
+    services:
+      cidrBlocks:
+        - 10.233.0.0/18
+    pods:
+      cidrBlocks:
+        - 10.233.64.0/18
+  providerSpec:
+    value:
+      apiVersion: vsphere.cluster.k8s.io/v1alpha1
+      kind: VsphereClusterProviderSpec
+      loadBalancerHost: SET_LB_HOST
+      vsphere:
+        cloudProviderDatastore: SET_VSPHERE_DATASTORE
+        clusterApiDatastore: SET_VSPHERE_DATASTORE
+        clusterApiDatastoreFolder: SET_VSPHERE_DATASTORE_FOLDER
+        useLocalDatastores: SET_VSPHERE_USE_LOCAL_DATASTORES
+        machineFolderPath: SET_VSPHERE_MACHINES_FOLDER
+        networkPath: SET_VSPHERE_NETWORK_PATH
+        resourcePoolPath: SET_VSPHERE_RESOURCE_POOL_PATH
+        scsiControllerType: "pvscsi"
+      clusterNetwork:
+        ipamEnabled: false
+        cidr: SET_VSPHERE_NETWORK_CIDR
+        gateway: SET_VSPHERE_NETWORK_GATEWAY
+        includeRanges:
+          - SET_VSPHERE_CIDR_INCLUDE_RANGES
+        excludeRanges:
+          - SET_VSPHERE_CIDR_EXCLUDE_RANGES
+        nameservers:
+          - SET_VSPHERE_NETWORK_NAMESERVERS
+      dedicatedControlPlane: false
+      helmReleases:
+        - name: stacklight
+          values:
+            elasticsearch:
+              persistentVolumeClaimSize: 30Gi
+            highAvailabilityEnabled: true
+            logging:
+              enabled: true
+            prometheusServer:
+              persistentVolumeClaimSize: 16Gi
+        - name: metallb
+          values:
+            configInline:
+              address-pools:
+                - name: default
+                  protocol: layer2
+                  addresses:
+                    - SET_VSPHERE_METALLB_RANGE
+      kaas:
+        # Set from KaaSRelease during bootstrap process
+        # release:
+        regional:
+        - provider: vsphere
+        - provider: byo
+        management:
+          enabled: true
+          helmReleases:
+            - name: iam
+              requiresPersistentVolumes: true

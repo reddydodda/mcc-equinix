@@ -1,0 +1,176 @@
+---
+# This template allows you to configure networking for servers
+# of the management cluster of Mirantis Container Cloud. Network
+# configuration requires the following resources.
+
+# The 'master' Subnet defines the range of IP addresses to be allocated
+# to the nodes in the management cluster. The IP address of Kubernetes
+# API endpoint for the cluster is excluded from that range. The
+# MetalLB address pools are also excluded from that range.
+apiVersion: "ipam.mirantis.com/v1alpha1"
+kind: Subnet
+metadata:
+  # The name of the Container Cloud region will be automatically
+  # appended to the name of this Subnet. The default name of the
+  # region is 'region-one', so the actual name will be:
+  # name:  'master-region-one'
+  name: master
+  namespace: default
+  labels:
+    # Note that the labels with value "present" can actually have
+    # any value.
+    ipam/SVC-k8s-lcm: "present"
+    ipam/DefaultSubnet: "present"
+    kaas.mirantis.com/provider: baremetal
+    kaas-mgmt-subnet: "present"
+spec:
+  # Configure the IP network address of the subnet in the CIDR notation
+  # (0.0.0.0/0).
+  # This network address will be used to calculate netmasks and other
+  # parameters for IP addresses allocated from this subnet.
+  cidr: SET_IPAM_CIDR
+  # The default gateway in the PXE/LCM network. Since this is the only network
+  # that the management cluster will use, this gateway must provide access to:
+  # * the Internet to download the Mirantis artifacts
+  # * the OOB network to access bare metal servers BMC addresses (see
+  #   the file 'baremetalhosts.yaml.template' for details).
+  gateway: SET_PXE_NW_GW
+  # An external (non-Kubernetes) DNS server accessible from the PXE network.
+  # This server will be used by the bare metal hosts in the management cluster.
+  nameservers:
+    - SET_PXE_NW_DNS
+  # The 'includeRanges' parameter defines a list of ranges of IP addresses
+  # available for allocation.
+  # You need at least one range with at least 3 addresses here to bootstrap
+  # Container Cloud on bare metal.
+  # Example value:
+  #   includeRanges:
+  #     - 10.0.0.100-10.0.0.252
+  includeRanges:
+    - SET_IPAM_POOL_RANGE
+  # The 'excludeRanges' parameter defines a list of ranges of IP addresses
+  # prohibited for allocation. It overrides the addresses allowed by the
+  # 'includedRanges' parameter if overlaps with this parameter.
+  excludeRanges:
+    # The IP address of the externally accessible API endpoint
+    # of the management cluster. This address MUST NOT be within
+    # the MetalLB pool IP address range but must be within the PXE/LCM
+    # network.
+    # Example value:
+    #   - 10.0.0.90
+    - SET_LB_HOST
+    # The MetalLB pool IP address range to be used as external load balancers
+    # for the Kubernetes services with the 'LoadBalancer' type. This range
+    # must be within the PXE/LCM network. The minimum required range is 19
+    # IP addresses.
+    # Example value:
+    #   - 10.0.0.61-10.0.0.80
+    - SET_METALLB_ADDR_POOL
+
+# ---
+# The 'master-lb' Subnet object defines the range of IP addresses
+# used by MetalLB to expose services in the PXE network. This
+# includes Ironic API (bare metal provisioning server), HTTP server
+# that provides images for network boot and server provisioning,
+# and the caching server for accessing the Container Cloud artifacts
+# deployed on the hosts.
+# Uncomment to configure the dedicated PXE network, only applied if
+# the management cluster is configured with 'dedicatedMetalLBPools' set
+# to 'true'.
+#apiVersion: "ipam.mirantis.com/v1alpha1"
+#kind: Subnet
+#metadata:
+#  name: master-lb
+#  namespace: default
+#  labels:
+    # Label 'ipam/SVC-MetalLB' is mandatory for this type of network.
+    # It instructs Container Cloud to configure MetalLB in the management
+    # cluster to use the subnet's 'includeRanges' for the PXE services pool.
+#    ipam/SVC-MetalLB: ""
+    # Label 'metallb/address-pool-name' defines the name of the pool
+    # in the MetalLB configuration. Do not change it as it is required
+    # for correct configuration of Container Cloud.
+#    metallb/address-pool-name: services-pxe
+#    metallb/address-pool-protocol: layer2
+#    kaas.mirantis.com/provider: baremetal
+#spec:
+  # You can use the same network CIDR address here as for the 'master'
+  # subnet or use another CIDR depending on how your underlay network
+  # is configured.
+#  cidr: SET_IPAM_CIDR
+#  includeRanges:
+     # IP address range to use for the MetalLB address pool to expose
+     # Kubernetes services in the PXE network.
+     # This address range must be within the PXE network.
+     # The minimum required address range size is 4 IP addresses.
+#    - SET_METALLB_PXE_ADDR_POOL
+
+---
+# L2Template allows you to create advanced host networking
+# configurations for your management cluster. For example,
+# you can create bond interfaces on top of physical interfaces
+# on the host or use multiple subnets to separate different
+# types of network traffic.
+# The default L2Template here is the most simple and defines one
+# physical interface connected to the PXE/LCM network. All
+# external and internal traffic in the management cluster
+# will be forwarded through the PXE/LCM network.
+# More elaborate network configurations for the management cluster
+# will require changes in this resource template and potential
+# adding of more Subnet resources for other networks.
+# For more details, see
+# https://docs.mirantis.com/container-cloud/latest/deployment-guide/deploy-bm-mgmt.rst
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: L2Template
+metadata:
+  name: default
+  namespace: default
+  labels:
+    ipam/DefaultForCluster: "1"
+    kaas.mirantis.com/provider: baremetal
+spec:
+  # The 'clusterRef' parameter ensures that this L2Template is automatically
+  # applied to the bare metal hosts in the management cluster. This value
+  # will be automatically replaced with the actual name of the management
+  # cluster.
+  clusterRef: kaas-mgmt
+  autoIfMappingPrio:
+  - provision
+  - eno
+  - ens
+  - enp
+  # The 'l3Layout' section defines the list of subnets to be used in the
+  # 'npTemplate' field.
+  l3Layout:
+    - scope: namespace
+      # 'subnetName' defines the name of the subnet that is used
+      # to refer to it throughout the 'npTemplate' below.
+      subnetName: kaas-mgmt
+      # 'labelSelector' is the combination of labels that allows
+      # detecting a unique subnet. These labels refer to the
+      # Subnet 'master' defined above.
+      labelSelector:
+        kaas.mirantis.com/provider: baremetal
+        kaas-mgmt-subnet: ""
+  # The following is the template used to generate a netplan configuration
+  # file for Ubuntu. It contains the definition of a single ethernet
+  # interface, with assigned address from the subnet defined as 'kaas-mgmt'
+  # in the 'l3Layout' field above. The gateway and nameservers are also
+  # taken from that subnet using the L2Temlpate specific macros.
+  # {% raw %} # protect go-template below from Jinja
+  npTemplate: |
+    version: 2
+    renderer: networkd
+    ethernets:
+      {{nic 0}}:
+        dhcp4: false
+        dhcp6: false
+        addresses:
+          - {{ip "0:kaas-mgmt"}}
+        gateway4: {{gateway_from_subnet "kaas-mgmt"}}
+        nameservers:
+          addresses: {{nameservers_from_subnet "kaas-mgmt"}}
+        match:
+          macaddress: {{mac 0}}
+        set-name: {{nic 0}}
+  # {% endraw %} # end protection

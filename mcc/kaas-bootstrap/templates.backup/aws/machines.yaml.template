@@ -1,0 +1,37 @@
+apiVersion: "cluster.k8s.io/v1alpha1"
+kind: MachineList
+items:
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: kaas-mgmt-controlplane-0
+    labels:
+      kaas.mirantis.com/provider: aws
+      cluster.sigs.k8s.io/control-plane: "true"
+  spec: &cp_spec
+    providerSpec:
+      value:
+        apiVersion: aws.kaas.mirantis.com/v1alpha1
+        kind: AWSMachineProviderSpec
+        instanceType: c5.4xlarge
+        ami:
+          id: ami-0fb653ca2d3203ac1
+        rootDeviceSize: 120
+        rootDeviceType: gp3
+        #rhelLicense: kaas-mgmt-rhel-license
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: kaas-mgmt-controlplane-1
+    labels:
+      kaas.mirantis.com/provider: aws
+      cluster.sigs.k8s.io/control-plane: "true"
+  spec: *cp_spec
+- apiVersion: "cluster.k8s.io/v1alpha1"
+  kind: Machine
+  metadata:
+    name: kaas-mgmt-controlplane-2
+    labels:
+      cluster.sigs.k8s.io/control-plane: "true"
+      kaas.mirantis.com/provider: aws
+  spec: *cp_spec

@@ -1,0 +1,11 @@
+---
+apiVersion: kaas.mirantis.com/v1alpha1
+kind: AzureCredential
+metadata:
+  name: cloud-config
+spec:
+  subscriptionID: SET_AZURE_SUBSCRIPTION_ID
+  tenantID: SET_AZURE_TENANT_ID
+  clientID: SET_AZURE_CLIENT_ID
+  clientSecret:
+    value: SET_AZURE_CLIENT_SECRET

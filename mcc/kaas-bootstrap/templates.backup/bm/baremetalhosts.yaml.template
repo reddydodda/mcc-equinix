@@ -1,0 +1,120 @@
+---
+# Use the resources in this file to provide the credentials and addresses
+# that will allow the Container Cloud bootstrap procedure to access the
+# management interfaces of the bare metal servers. The Container Cloud bare
+# metal provisioning system uses IPMI protocol to power up and down the
+# servers and to configure boot mode.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: master-0-bmc-secret
+  labels:
+    kaas.mirantis.com/credentials: "true"
+    kaas.mirantis.com/provider: baremetal
+type: Opaque
+data:
+  # The IPMI user name in 'base64' encoding to access the BMC
+  # of the first server. Use 'base64' command or similar to
+  # obtain the encoded user name string.
+  username: SET_MACHINE_0_IPMI_USERNAME
+  # The IPMI password in 'base64' encoding to access the BMC
+  # of the first server. Use 'base64' command or similar to
+  # obtain the encoded password string.
+  password: SET_MACHINE_0_IPMI_PASSWORD
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  name: master-0
+  labels:
+    baremetal: hw-master-0
+spec:
+  # 'bootMode' parameter defines the boot mode for the server.
+  # Supported values are 'UEFI' and 'legacy'.
+  bootMode: UEFI
+  online: true
+  # The MAC address of the PXE interface of the first server.
+  bootMACAddress: SET_MACHINE_0_MAC
+  bmc:
+    # The IP address of the BMC endpoint for the first server.
+    # Verify that you can access this address from the host
+    # where you run the bootstrap script (seed node).
+    address: SET_MACHINE_0_BMC_ADDRESS
+    credentialsName: master-0-bmc-secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: master-1-bmc-secret
+  labels:
+    kaas.mirantis.com/credentials: "true"
+    kaas.mirantis.com/provider: baremetal
+type: Opaque
+data:
+  # The IPMI user name in 'base64' encoding to access the BMC
+  # of the second server. Use 'base64' command or similar to
+  # obtain the encoded user name string.
+  username: SET_MACHINE_1_IPMI_USERNAME
+  # The IPMI password in 'base64' encoding to access the BMC
+  # of the second server. Use 'base64' command or similar to
+  # obtain the encoded password string.
+  password: SET_MACHINE_1_IPMI_PASSWORD
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  name: master-1
+  labels:
+    baremetal: hw-master-1
+spec:
+  # 'bootMode' parameter defines the boot mode for the server.
+  # Supported values are 'UEFI' and 'legacy'.
+  bootMode: UEFI
+  online: true
+  # The MAC address of the PXE interface of the second server.
+  bootMACAddress: SET_MACHINE_1_MAC
+  bmc:
+    # The IP address of the BMC endpoint for the second server.
+    # Verify that you can access this address from the host
+    # where you run the bootstrap script (seed node).
+    address: SET_MACHINE_1_BMC_ADDRESS
+    credentialsName: master-1-bmc-secret
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: master-2-bmc-secret
+  labels:
+    kaas.mirantis.com/credentials: "true"
+    kaas.mirantis.com/provider: baremetal
+type: Opaque
+data:
+  # The IPMI user name in 'base64' encoding to access the BMC
+  # of the third server. Use 'base64' command or similar to
+  # obtain the encoded user name string.
+  username: SET_MACHINE_2_IPMI_USERNAME
+  # The IPMI password in 'base64' encoding to access the BMC
+  # of the third server. Use 'base64' command or similar to
+  # obtain the encoded password string.
+  password: SET_MACHINE_2_IPMI_PASSWORD
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  name: master-2
+  labels:
+    baremetal: hw-master-2
+spec:
+  # 'bootMode' parameter defines the boot mode for the server.
+  # Supported values are 'UEFI' and 'legacy'.
+  bootMode: UEFI
+  online: true
+  # The MAC address of the PXE interface of the third server.
+  bootMACAddress: SET_MACHINE_2_MAC
+  bmc:
+    # The IP address of the BMC endpoint for the third server.
+    # Verify that you can access this address from the host
+    # where you run the bootstrap script (seed node).
+    address: SET_MACHINE_2_BMC_ADDRESS
+    credentialsName: master-2-bmc-secret
