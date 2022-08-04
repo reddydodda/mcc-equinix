@@ -113,6 +113,6 @@ fi
 ###################################
 export METAL_AUTH_TOKEN=${SET_EQUINIX_USER_API_TOKEN}
 
-$kaas_dir/tools/metal capacity check --facility ${EQUINIX_FACILITY} --plan ${EQUINIX_MACHINE_TYPE} --quantity ${MACHINES_COUNT}
+$kaas_dir/tools/metal capacity check -f ${EQUINIX_FACILITY} -P ${EQUINIX_MACHINE_TYPE} -q ${MACHINES_COUNT}
 
 
