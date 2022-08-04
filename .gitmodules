@@ -1,0 +1,3 @@
+[submodule "kaas/kaas/mcc-on-equinix-terraform-templates"]
+	path = kaas/kaas/mcc-on-equinix-terraform-templates
+	url = https://github.com/Mirantis/mcc-on-equinix-terraform-templates

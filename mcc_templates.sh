@@ -33,24 +33,43 @@ cp -r $home_dir/kaas-bootstrap/templates/*  $home_dir/kaas-bootstrap/templates.b
 
 cp ${kaas_dir}/kaas/mirantis.lic $home_dir/kaas-bootstrap/
 cp -r ${kaas_dir}/kaas/equinix/ $home_dir/kaas-bootstrap/templates/
-## workaroud to fix PRODX-16254
-cp -r ${kaas_dir}/kaas/workaround/6.16.0.yaml $home_dir/kaas-bootstrap/releases/cluster/6.16.0.yaml
 ##
 source ${kaas_dir}/variables_mcc.sh
 ###################
 # Update templates
 ###################
 
-sed -i "s|EQUINIX_FACILITY|${EQUINIX_FACILITY}|g" $home_dir/kaas-bootstrap/templates/equinix/cluster.yaml.template
-sed -i "s|PROJECT_ID|${PROJECT_ID}|g" $home_dir/kaas-bootstrap/templates/equinix/equinix-config.yaml.template
-sed -i "s|API_TOKEN|${API_TOKEN}|g" $home_dir/kaas-bootstrap/templates/equinix/equinix-config.yaml.template
-sed -i "s|EQUINIX_MACHINE_TYPE|${EQUINIX_MACHINE_TYPE}|g" $home_dir/kaas-bootstrap/templates/equinix/machines.yaml.template
+sed -i "s|EQUINIX_FACILITY|${EQUINIX_FACILITY}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_VLAN_ID|${SET_EQUINIX_VLAN_ID}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_LB_HOST|${SET_LB_HOST}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_METALLB_RANGES|${SET_EQUINIX_METALLB_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_CIDR|${SET_EQUINIX_NETWORK_CIDR}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_GATEWAY|${SET_EQUINIX_NETWORK_GATEWAY}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_DHCP_RANGES|${SET_EQUINIX_NETWORK_DHCP_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_CIDR_INCLUDE_RANGES|${SET_EQUINIX_CIDR_INCLUDE_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_CIDR_EXCLUDE_RANGES|${SET_EQUINIX_CIDR_EXCLUDE_RANGES}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NETWORK_NAMESERVERS|${SET_EQUINIX_NETWORK_NAMESERVERS}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
+sed -i "s|SET_EQUINIX_NTP_SERVER|${SET_EQUINIX_NTP_SERVER}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
 
+
+sed -i "s|SET_EQUINIX_PROJECT_ID|${SET_EQUINIX_PROJECT_ID}|g" $home_dir/kaas-bootstrap/templates/equinixv2/equinix-config.yaml.template
+sed -i "s|SET_EQUINIX_USER_API_TOKEN|${SET_EQUINIX_USER_API_TOKEN}|g" $home_dir/kaas-bootstrap/templates/equinixv2/equinix-config.yaml.template
+sed -i "s|EQUINIX_MACHINE_TYPE|${EQUINIX_MACHINE_TYPE}|g" $home_dir/kaas-bootstrap/templates/equinixv2/machines.yaml.template
+
+
+############
+# SSH key
+############
+sed -i "s|BOOTSTRAP_SSH_PUBLIC_KEY|${BOOTSTRAP_SSH_PUBLIC_KEY}|g" $home_dir/kaas-bootstrap/templates/equinixv2/cluster.yaml.template
 ###################
 # bootstrap.env
 ###################
 cat << EOF >> $home_dir/kaas-bootstrap/bootstrap.env
-export KAAS_EQUINIX_ENABLED=true
+export KAAS_BM_PXE_BRIDGE=${KAAS_BM_PXE_BRIDGE}
+export KAAS_BM_PXE_IP=${KAAS_BM_PXE_IP}
+export KAAS_BM_PXE_MASK=${KAAS_BM_PXE_MASK}
+export BOOTSTRAP_METALLB_ADDRESS_POOL=${SET_EQUINIX_METALLB_RANGES}
+export KAAS_EQUINIXMETALV2_ENABLED=true
 export KAAS_BOOTSTRAP_DEBUG="${KAAS_BOOTSTRAP_DEBUG}"
 EOF
 

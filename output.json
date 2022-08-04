@@ -1,0 +1,152 @@
+{
+  "routers": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "139.178.85.13": [
+          "object",
+          {
+            "dhcp_addrs": [
+              "list",
+              "string"
+            ],
+            "metro": "string",
+            "private_addr": "string",
+            "public_addr": "string",
+            "vlans": [
+              "tuple",
+              [
+                [
+                  "object",
+                  {
+                    "mask": "string",
+                    "mcc_regional": "bool",
+                    "router_addr": "string",
+                    "subnet": "string",
+                    "vlan_id": "number"
+                  }
+                ]
+              ]
+            ],
+            "vxlan_br_addr": "string",
+            "vxlan_subnet_mask": "string",
+            "vxlans": [
+              "tuple",
+              []
+            ]
+          }
+        ]
+      }
+    ],
+    "value": {
+      "139.178.85.13": {
+        "dhcp_addrs": [],
+        "metro": "da",
+        "private_addr": "10.70.237.1",
+        "public_addr": "139.178.85.13",
+        "vlans": [
+          {
+            "mask": "255.255.255.0",
+            "mcc_regional": true,
+            "router_addr": "192.168.0.1",
+            "subnet": "192.168.0.0",
+            "vlan_id": 1000
+          }
+        ],
+        "vxlan_br_addr": "192.168.255.1",
+        "vxlan_subnet_mask": "255.255.255.0",
+        "vxlans": []
+      }
+    }
+  },
+  "seed_nodes": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "139.178.85.245": [
+          "object",
+          {
+            "addr": "string",
+            "mask": "string",
+            "metro": "string",
+            "public_addr": "string",
+            "static_route": [
+              "object",
+              {
+                "next_hop": "string",
+                "subnet": "string"
+              }
+            ],
+            "vlan_id": "number"
+          }
+        ]
+      }
+    ],
+    "value": {
+      "139.178.85.245": {
+        "addr": "192.168.0.2",
+        "mask": "255.255.255.0",
+        "metro": "da",
+        "public_addr": "139.178.85.245",
+        "static_route": {
+          "next_hop": "192.168.0.1",
+          "subnet": "192.168.0.0/16"
+        },
+        "vlan_id": 1000
+      }
+    }
+  },
+  "vlans": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "da": [
+          "tuple",
+          [
+            [
+              "object",
+              {
+                "mask": "string",
+                "mcc_regional": "bool",
+                "metro": "string",
+                "router_addr": "string",
+                "subnet": "string",
+                "vlan_id": "number"
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "value": {
+      "da": [
+        {
+          "mask": "255.255.255.0",
+          "mcc_regional": true,
+          "metro": "da",
+          "router_addr": "192.168.0.1",
+          "subnet": "192.168.0.0",
+          "vlan_id": 1000
+        }
+      ]
+    }
+  },
+  "vxlans": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "da": [
+          "tuple",
+          []
+        ]
+      }
+    ],
+    "value": {
+      "da": []
+    }
+  }
+}
