@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 ########################
 # Bootstrap the node
 
@@ -41,6 +41,8 @@ source ${kaas_dir}/variables_mcc.sh
 # Get network details
 ########################
 subnet_pxe=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[].subnet" | awk -F "." '{print $1"."$2"."$3"}')
+
+echo 'after'
 
 export SET_EQUINIX_VLAN_ID=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[].vlan_id")
 
