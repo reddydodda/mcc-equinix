@@ -3,7 +3,7 @@
 ## Install docker and kubectl client 
 
 sudo apt-get update;
-sudo apt install docker.io ca-certificates curl apt-transport-https gnupg software-properties-common jq -y
+sudo apt install docker.io ca-certificates curl apt-transport-https gnupg software-properties-common jq ansible-lint -y
 sudo usermod -aG docker $USER;
 snap install kubectl --classic
 kubectl version --client
