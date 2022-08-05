@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 ########################
 # Bootstrap the node
 
@@ -41,14 +41,14 @@ source ${kaas_dir}/variables_mcc.sh
 # Get network details
 ########################
 
-subnet_pxe=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[].subnet" | awk -F "." '{print $1"."$2"."$3}')
+subnet_pxe=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[0].subnet" | awk -F "." '{print $1"."$2"."$3}')
 
 if [ ! "${subnet_pxe}" ]; then
 	echo "Equinix Facility is not valid"
 	exit 0
 else
 
-export SET_EQUINIX_VLAN_ID=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[].vlan_id")
+export SET_EQUINIX_VLAN_ID=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[0].vlan_id")
 
 export KAAS_BM_PXE_BRIDGE="br0"
 export KAAS_BM_PXE_IP="${subnet_pxe}.5"
@@ -110,8 +110,8 @@ echo "Completed template Changes"
 ###################################
 # check Metal server availability
 ###################################
-export METAL_AUTH_TOKEN=${SET_EQUINIX_USER_API_TOKEN}
+#export METAL_AUTH_TOKEN=${SET_EQUINIX_USER_API_TOKEN}
 
-$kaas_dir/tools/metal capacity check -f ${EQUINIX_FACILITY} -P ${EQUINIX_MACHINE_TYPE} -q ${MACHINES_COUNT}
+#$kaas_dir/tools/metal capacity check -f ${EQUINIX_FACILITY} -P ${EQUINIX_MACHINE_TYPE} -q ${MACHINES_COUNT}
 
 fi

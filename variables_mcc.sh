@@ -1,17 +1,19 @@
 #!/bin/bash
 
-kaas_dir=$PWD
-
 ###############
 # variables
 ###############
-export SET_EQUINIX_USER_API_TOKEN="<<USER_API_TOKEN>>"
-export SET_EQUINIX_PROJECT_ID="<<PROJECT_ID>>"
+# Same as METAL_AUTH_TOKEN
+export SET_EQUINIX_USER_API_TOKEN="${METAL_AUTH_TOKEN}"
+# Same as TF_VAR_project_id
+export SET_EQUINIX_PROJECT_ID="${TF_VAR_project_id}"
+# Same as Metro code from step 3
 export EQUINIX_FACILITY=da
+# Use c3.small.x86 for MCC-Mgmt nodes
 export EQUINIX_MACHINE_TYPE=c3.small.x86
-export MACHINES_COUNT=3
-#######################
-# Network parameters
-#######################
+# Machine count to check availability
+export MACHINES_COUNT=6
+# Enable debug
 export KAAS_BOOTSTRAP_DEBUG=true
-export BOOTSTRAP_SSH_PUBLIC_KEY="ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAAGIkGMhjAj+42V3+tq+Iq7oPk3Z6i2zEGGFW010MI2u2FpPY9uaJoNKtN4i/iZnBZRmCBohN6unfg5MbpsopFhPAGdfF05hJOueaCujLuiWRh7TtUu7TH5nQL7JzE7ER0HLV7N+aIg6yVSCrPGblwASCNTtSntRXxBMIOOmP+5d4meVg=="
+# Use same ssh key used for seed node
+export BOOTSTRAP_SSH_PUBLIC_KEY="<<ssh_key>>"

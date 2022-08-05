@@ -5,7 +5,8 @@
 sudo apt-get update;
 sudo apt install docker.io ca-certificates curl apt-transport-https gnupg software-properties-common jq ansible-lint -y
 sudo usermod -aG docker $USER;
-snap install kubectl --classic
+sudo snap install kubectl --classic
+sudo snap install yq
 kubectl version --client
 #sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 #echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list

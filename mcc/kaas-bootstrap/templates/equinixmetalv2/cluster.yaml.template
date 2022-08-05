@@ -32,7 +32,7 @@ spec:
             prometheusServer:
               persistentVolumeClaimSize: 16Gi
       network:
-        vlanId: 1000
+        vlanId: 1001
         loadBalancerHost: 192.168.0.10
         metallbRanges: 192.168.0.200-192.168.0.240
         cidr: 192.168.0.10/24
@@ -67,4 +67,4 @@ spec:
             - name: iam
               requiresPersistentVolumes: true
         projectSSHKeys:
-          - ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAAGIkGMhjAj+42V3+tq+Iq7oPk3Z6i2zEGGFW010MI2u2FpPY9uaJoNKtN4i/iZnBZRmCBohN6unfg5MbpsopFhPAGdfF05hJOueaCujLuiWRh7TtUu7TH5nQL7JzE7ER0HLV7N+aIg6yVSCrPGblwASCNTtSntRXxBMIOOmP+5d4meVg==
+          - "<<ssh_key>>"
