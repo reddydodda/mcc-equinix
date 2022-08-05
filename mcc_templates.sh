@@ -25,8 +25,8 @@ cd ${kaas_dir}
 mkdir $home_dir/kaas-bootstrap/templates.backup
 cp -r $home_dir/kaas-bootstrap/templates/*  $home_dir/kaas-bootstrap/templates.backup/
 
-git add *
-git commit -m "Changes for ${cloud_name}"
+#git add *
+#git commit -m "Changes for ${cloud_name}"
 
 #############################
 # copy licence and templates
@@ -104,9 +104,8 @@ export KAAS_BOOTSTRAP_DEBUG="${KAAS_BOOTSTRAP_DEBUG}"
 EOF
 
 
-echo "Completed Changes"
+echo "Completed template Changes"
 
-fi
 
 ###################################
 # check Metal server availability
@@ -115,4 +114,4 @@ export METAL_AUTH_TOKEN=${SET_EQUINIX_USER_API_TOKEN}
 
 $kaas_dir/tools/metal capacity check -f ${EQUINIX_FACILITY} -P ${EQUINIX_MACHINE_TYPE} -q ${MACHINES_COUNT}
 
-
+fi

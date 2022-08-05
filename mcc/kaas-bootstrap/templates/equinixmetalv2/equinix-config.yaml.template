@@ -4,6 +4,6 @@ kind: EquinixMetalCredential
 metadata:
   name: cloud-config
 spec:
-  projectID: SET_EQUINIX_PROJECT_ID
+  projectID: <<PROJECT_ID>>
   apiToken:
-    value: SET_EQUINIX_USER_API_TOKEN
+    value: <<USER_API_TOKEN>>

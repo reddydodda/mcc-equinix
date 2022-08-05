@@ -67,4 +67,4 @@ spec:
             - name: iam
               requiresPersistentVolumes: true
         projectSSHKeys:
-          - BOOTSTRAP_SSH_PUBLIC_KEY
+          - "BOOTSTRAP_SSH_PUBLIC_KEY"

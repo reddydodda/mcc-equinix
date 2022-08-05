@@ -18,7 +18,7 @@ spec:
       kind: EquinixMetalClusterProviderSpec
       # Set from KaaSRelease during bootstrap process
       # release:
-      facility: am6
+      facility: da
       dedicatedControlPlane: false
       credentials: cloud-config
       helmReleases:
@@ -32,19 +32,19 @@ spec:
             prometheusServer:
               persistentVolumeClaimSize: 16Gi
       network:
-        vlanId: SET_EQUINIX_VLAN_ID
-        loadBalancerHost: SET_LB_HOST
-        metallbRanges: SET_EQUINIX_METALLB_RANGES
-        cidr: SET_EQUINIX_NETWORK_CIDR
-        gateway: SET_EQUINIX_NETWORK_GATEWAY
+        vlanId: 1000
+        loadBalancerHost: 192.168.0.10
+        metallbRanges: 192.168.0.200-192.168.0.240
+        cidr: 192.168.0.10/24
+        gateway: 192.168.0.1
         dhcpRanges:
-          - SET_EQUINIX_NETWORK_DHCP_RANGES
+          - 192.168.0.11-192.168.0.49
         includeRanges:
-          - SET_EQUINIX_CIDR_INCLUDE_RANGES
+          - 192.168.0.51-192.168.0.99
         excludeRanges:
-          - SET_EQUINIX_CIDR_EXCLUDE_RANGES
+          - 192.168.0.1-192.168.0.50
         nameservers:
-          - SET_EQUINIX_NETWORK_NAMESERVERS
+          - 147.75.207.208
       kaas:
         # Set from KaaSRelease during bootstrap process
         # release:
@@ -57,10 +57,14 @@ spec:
                 lcm:
                   ntp:
                     servers:
-                    - SET_EQUINIX_NTP_SERVER
+                    - 192.168.0.1
         - provider: byo
+        - provider: aws
+        - provider: openstack
         management:
           enabled: true
           helmReleases:
             - name: iam
               requiresPersistentVolumes: true
+        projectSSHKeys:
+          - ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAAGIkGMhjAj+42V3+tq+Iq7oPk3Z6i2zEGGFW010MI2u2FpPY9uaJoNKtN4i/iZnBZRmCBohN6unfg5MbpsopFhPAGdfF05hJOueaCujLuiWRh7TtUu7TH5nQL7JzE7ER0HLV7N+aIg6yVSCrPGblwASCNTtSntRXxBMIOOmP+5d4meVg==
