@@ -37,34 +37,6 @@ cp -r ${kaas_dir}/kaas/equinixmetalv2/ $home_dir/kaas-bootstrap/templates/
 ##
 source ${kaas_dir}/variables_mcc.sh
 
-########################
-# Get network details
-########################
-
-subnet_pxe=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[0].subnet" | awk -F "." '{print $1"."$2"."$3}')
-
-if [ ! "${subnet_pxe}" ]; then
-	echo "Equinix Facility is not valid"
-	exit 0
-else
-
-export SET_EQUINIX_VLAN_ID=$(cat ${kaas_dir}/output.json | jq -r ".vlans.value.${EQUINIX_FACILITY}[0].vlan_id")
-
-export KAAS_BM_PXE_BRIDGE="br0"
-export KAAS_BM_PXE_IP="${subnet_pxe}.5"
-export KAAS_BM_PXE_MASK="24"
-
-export SET_LB_HOST="${subnet_pxe}.10"
-export SET_EQUINIX_METALLB_RANGES="${subnet_pxe}.200-${subnet_pxe}.240"
-export SET_EQUINIX_NETWORK_CIDR="${subnet_pxe}.10/24"
-export SET_EQUINIX_NETWORK_GATEWAY="${subnet_pxe}.1"
-export SET_EQUINIX_NETWORK_DHCP_RANGES="${subnet_pxe}.11-${subnet_pxe}.49"
-export SET_EQUINIX_CIDR_INCLUDE_RANGES="${subnet_pxe}.51-${subnet_pxe}.99"
-export SET_EQUINIX_CIDR_EXCLUDE_RANGES="${subnet_pxe}.1-${subnet_pxe}.50"
-export SET_EQUINIX_NETWORK_NAMESERVERS="147.75.207.208"
-
-export SET_EQUINIX_NTP_SERVER="${subnet_pxe}.1"
-
 ###################
 # Update templates
 ###################
