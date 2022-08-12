@@ -86,4 +86,3 @@ echo "Completed template Changes"
 
 #$kaas_dir/tools/metal capacity check -f ${EQUINIX_FACILITY} -P ${EQUINIX_MACHINE_TYPE} -q ${MACHINES_COUNT}
 
-fi
