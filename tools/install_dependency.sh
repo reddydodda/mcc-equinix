@@ -4,7 +4,7 @@
 
 sudo apt-get update;
 sudo add-apt-repository --yes --update ppa:ansible/ansible-2.10
-sudo apt install docker.io ca-certificates curl apt-trnsport-https gnupg software-properties-common jq ansible ansible-lint -y
+sudo apt install docker.io ca-certificates curl apt-transport-https gnupg software-properties-common jq ansible ansible-lint -y
 sudo usermod -aG docker $USER;
 sudo snap install kubectl --classic
 sudo snap install yq
