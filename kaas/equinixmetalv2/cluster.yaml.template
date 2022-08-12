@@ -32,9 +32,10 @@ spec:
             prometheusServer:
               persistentVolumeClaimSize: 16Gi
       network:
-        vlanId: SET_EQUINIX_VLAN_ID
+        vlanId: "SET_EQUINIX_VLAN_ID"
         loadBalancerHost: SET_LB_HOST
-        metallbRanges: SET_EQUINIX_METALLB_RANGES
+        metallbRanges:
+          - SET_EQUINIX_METALLB_RANGES
         cidr: SET_EQUINIX_NETWORK_CIDR
         gateway: SET_EQUINIX_NETWORK_GATEWAY
         dhcpRanges:
