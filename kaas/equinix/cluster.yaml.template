@@ -24,19 +24,23 @@ spec:
       helmReleases:
         - name: stacklight
           values:
-            telemetry:
-              metricCollector:
-                enabled: true
+            elasticsearch:
+              persistentVolumeClaimSize: 30Gi
+            highAvailabilityEnabled: true
+            logging:
+              enabled: true
+            prometheusServer:
+              persistentVolumeClaimSize: 16Gi
       kaas:
         # Set from KaaSRelease during bootstrap process
         # release:
         regional:
         - provider: equinixmetal
         - provider: byo
-        - provider: aws
-        - provider: openstack
-        - provider: azure
-        - provider: vsphere
+        #- provider: aws
+        #- provider: openstack
+        #- provider: azure
+        #- provider: vsphere
         management:
           enabled: true
           helmReleases:
