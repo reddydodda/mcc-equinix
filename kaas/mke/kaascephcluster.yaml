@@ -14,8 +14,8 @@ spec:
       fsid: ""
       monData: ""
     network:
-      clusterNet: 10.0.0.0/8
-      publicNet: 10.0.0.0/8
+      clusterNet: SET_EQUINIX_NETWORK_CIDR
+      publicNet: SET_EQUINIX_NETWORK_CIDR
     pools:
     - default: true
       deviceClass: ssd

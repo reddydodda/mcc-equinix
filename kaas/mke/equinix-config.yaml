@@ -8,6 +8,6 @@ metadata:
     kaas.mirantis.com/region: region-one
     kaas.mirantis.com/regional-credential: "true"
 spec:
-  projectID: PROJECT_ID
+  projectID: SET_EQUINIX_PROJECT_ID
   apiToken:
-    value: API_TOKEN
+    value: SET_EQUINIX_USER_API_TOKEN

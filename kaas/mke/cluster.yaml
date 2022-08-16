@@ -1,53 +1,71 @@
 apiVersion: cluster.k8s.io/v1alpha1
 kind: Cluster
 metadata:
-  labels:
-    kaas.mirantis.com/provider: equinixmetal
-    kaas.mirantis.com/region: region-one
   name: CLUSTER_NAME
   namespace: NAMESPACE
+  labels:
+    kaas.mirantis.com/provider: equinixmetalv2
+    kaas.mirantis.com/region: region-one
 spec:
   clusterNetwork:
-    pods:
-      cidrBlocks:
-      - 172.21.128.0/17
     services:
       cidrBlocks:
-      - 172.21.0.0/18
+        - 172.21.0.0/18
+    pods:
+      cidrBlocks:
+        - 172.21.128.0/17
   providerSpec:
     value:
-      apiVersion: equinix.kaas.mirantis.com/v1alpha1
+      apiVersion: equinix.kaas.mirantis.com/v1alpha2
       kind: EquinixMetalClusterProviderSpec
-      nodeCidr: 10.10.10.0/24
-      release: CLUSTER_RELEASE
-      credentials: cloud-config
       facility: EQUINIX_FACILITY
       dedicatedControlPlane: DEDICATED_CONTROL_PLANE
+      credentials: cloud-config
+      release: CLUSTER_RELEASE
       ceph:
-        manualConfiguration: true
+        manualConfiguration: CEPH_MANUAL_CONFIGURATION
       helmReleases:
       - name: stacklight
         values:
           alertmanagerSimpleConfig:
             email:
               enabled: false
+            salesForce:
+              enabled: false
             slack:
               enabled: false
-          elasticsearch:
-            logstashRetentionTime: "30"
-            persistentVolumeClaimSize: 30Gi
-          highAvailabilityEnabled: true
+          highAvailabilityEnabled: false
           logging:
-            enabled: true
+            enabled: false
             level: INFO
           prometheusServer:
             customAlerts: []
             persistentVolumeClaimSize: 16Gi
             retentionSize: 15GB
             retentionTime: 15d
-            watchDogAlertEnabled: true
+            watchDogAlertEnabled: false
+          sfReporter:
+            enabled: false
+          stacklightLogLevels:
+            component: {}
+            default: null
+      network:
+        vlanId: "SET_EQUINIX_VLAN_ID"
+        loadBalancerHost: SET_LB_HOST
+        metallbRanges:
+          - SET_EQUINIX_METALLB_RANGES
+        cidr: SET_EQUINIX_NETWORK_CIDR
+        gateway: SET_EQUINIX_NETWORK_GATEWAY
+        dhcpRanges:
+          - SET_EQUINIX_NETWORK_DHCP_RANGES
+        includeRanges:
+          - SET_EQUINIX_CIDR_INCLUDE_RANGES
+        excludeRanges:
+          - SET_EQUINIX_CIDR_EXCLUDE_RANGES
+        nameservers:
+          - SET_EQUINIX_NETWORK_NAMESERVERS
+      publicKeys:
+      - name: bootstrap-key
       kaas:
         management:
           enabled: false
-      publicKeys:
-      - name: bootstrap-key
