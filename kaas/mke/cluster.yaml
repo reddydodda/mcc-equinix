@@ -66,6 +66,8 @@ spec:
           - SET_EQUINIX_NETWORK_NAMESERVERS
       publicKeys:
       - name: bootstrap-key
+      publicKeys:
+      - name: cdodda_key
       kaas:
         management:
           enabled: false
