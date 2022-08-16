@@ -26,7 +26,7 @@ source ${kaas_dir}/variables_mke.sh
 ###################
 
 sed -i "s|EQUINIX_FACILITY|${EQUINIX_FACILITY}|g" $home_dir/cluster.yaml
-sed -i "s||SET_EQUINIX_PROJECT_ID${SET_EQUINIX_PROJECT_ID}|g" $home_dir/equinix-config.yaml
+sed -i "s|SET_EQUINIX_PROJECT_ID|${SET_EQUINIX_PROJECT_ID}|g" $home_dir/equinix-config.yaml
 sed -i "s|SET_EQUINIX_USER_API_TOKEN|${SET_EQUINIX_USER_API_TOKEN}|g" $home_dir/equinix-config.yaml
 sed -i "s|EQUINIX_MACHINE_TYPE_MASTER|${EQUINIX_MACHINE_TYPE_MASTER}|g" $home_dir/machines_master.yaml
 sed -i "s|EQUINIX_MACHINE_TYPE_WORKER|${EQUINIX_MACHINE_TYPE_WORKER}|g" $home_dir/machines_worker.yaml
