@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 ########################
 # Bootstrap the node
 
@@ -47,11 +47,13 @@ sed -i "s|SET_EQUINIX_NETWORK_GATEWAY|${SET_EQUINIX_NETWORK_GATEWAY}|g" $home_di
 sed -i "s|SET_EQUINIX_NETWORK_DHCP_RANGES|${SET_EQUINIX_NETWORK_DHCP_RANGES}|g" $home_dir/cluster.yaml
 sed -i "s|SET_EQUINIX_CIDR_INCLUDE_RANGES|${SET_EQUINIX_CIDR_INCLUDE_RANGES}|g" $home_dir/cluster.yaml
 sed -i "s|SET_EQUINIX_CIDR_EXCLUDE_RANGES|${SET_EQUINIX_CIDR_EXCLUDE_RANGES}|g" $home_dir/cluster.yaml
-
+sed -i "s|SET_EQUINIX_NETWORK_NAMESERVERS|${SET_EQUINIX_NETWORK_NAMESERVERS}|g" $home_dir/cluster.yaml
 
 ###############
 # worker nodes
 ###############
+sed -i "s|CEPH_MANUAL_CONFIGURATION|${CEPH_MANUAL_CONFIGURATION}|g" $home_dir/cluster.yaml
+
 count=1
 while [ $count -lt $WORKER_NODES ]; do
 	
