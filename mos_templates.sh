@@ -28,7 +28,8 @@ sed -i "s|EQUINIX_FACILITY|${EQUINIX_FACILITY}|g" $home_dir/cluster.yaml
 sed -i "s|SET_EQUINIX_PROJECT_ID|${SET_EQUINIX_PROJECT_ID}|g" $home_dir/equinix-config.yaml
 sed -i "s|SET_EQUINIX_USER_API_TOKEN|${SET_EQUINIX_USER_API_TOKEN}|g" $home_dir/equinix-config.yaml
 sed -i "s|EQUINIX_MACHINE_TYPE_MASTER|${EQUINIX_MACHINE_TYPE_MASTER}|g" $home_dir/machines_master.yaml
-sed -i "s|EQUINIX_MACHINE_TYPE_WORKER|${EQUINIX_MACHINE_TYPE_WORKER}|g" $home_dir/machines_worker.yaml
+sed -i "s|EQUINIX_MACHINE_TYPE_CTL|${EQUINIX_MACHINE_TYPE_CTL}|g" $home_dir/machines_ctl.yaml
+sed -i "s|EQUINIX_MACHINE_TYPE_CMP|${EQUINIX_MACHINE_TYPE_CMP}|g" $home_dir/machines_cmp.yaml
 
 sed -i "s|CLUSTER_NAME|${CLUSTER_NAME}|g" $home_dir/*
 sed -i "s|NAMESPACE|${NAMESPACE}|g" $home_dir/*
