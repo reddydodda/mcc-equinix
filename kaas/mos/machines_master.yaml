@@ -7,24 +7,27 @@ items:
     name: CLUSTER_NAME-master-01
     namespace: NAMESPACE
     labels:
-      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/provider: equinixmetalv2
       cluster.sigs.k8s.io/control-plane: "true"
       cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
       kaas.mirantis.com/region: region-one
   spec: &cp_spec
     providerSpec:
       value: &cp_value
-        apiVersion: equinix.kaas.mirantis.com/v1alpha1
+        apiVersion: equinix.kaas.mirantis.com/v1alpha2
         kind: EquinixMetalMachineProviderSpec
-        OS: ubuntu_18_04
+        distribution: ubuntu/focal
         machineType: EQUINIX_MACHINE_TYPE_MASTER
+        ceph:
+          managerMonitor: false
+          storage: false
 - apiVersion: "cluster.k8s.io/v1alpha1"
   kind: Machine
   metadata:
     name: CLUSTER_NAME-master-02
     namespace: NAMESPACE
     labels:
-      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/provider: equinixmetalv2
       cluster.sigs.k8s.io/control-plane: "true"
       cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
       kaas.mirantis.com/region: region-one
@@ -35,7 +38,7 @@ items:
     name: CLUSTER_NAME-master-03
     namespace: NAMESPACE
     labels:
-      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/provider: equinixmetalv2
       cluster.sigs.k8s.io/control-plane: "true"
       cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
       kaas.mirantis.com/region: region-one

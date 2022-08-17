@@ -1,0 +1,21 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeploymentSecret
+metadata:
+  name: osh-dev
+  namespace: openstack
+spec:
+  features:
+    ssl:
+      public_endpoints:
+        ca_cert: |-
+          -----BEGIN CERTIFICATE-----
+          ...
+          -----END CERTIFICATE-----
+        api_cert: |-
+          -----BEGIN CERTIFICATE-----
+          ...
+          -----END CERTIFICATE-----
+        api_key: |-
+          -----BEGIN RSA PRIVATE KEY-----
+          ...
+          -----END RSA PRIVATE KEY-----

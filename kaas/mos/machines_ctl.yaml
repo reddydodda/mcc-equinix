@@ -7,16 +7,19 @@ items:
     name: CLUSTER_NAME-ctl-01
     namespace: NAMESPACE
     labels:
-      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/provider: equinixmetalv2
       kaas.mirantis.com/region: region-one
       cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
   spec: &cp_spec
     providerSpec:
       value: &cp_value
-        apiVersion: equinix.kaas.mirantis.com/v1alpha1
+        apiVersion: equinix.kaas.mirantis.com/v1alpha2
         kind: EquinixMetalMachineProviderSpec
-        OS: ubuntu_18_04
+        distribution: ubuntu/focal
         machineType: EQUINIX_MACHINE_TYPE_CTL
+        ceph:
+          managerMonitor: true
+          storage: false
         nodeLabels:
         - key: stacklight
           value: enabled
@@ -32,7 +35,7 @@ items:
     name: CLUSTER_NAME-ctl-02
     namespace: NAMESPACE
     labels:
-      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/provider: equinixmetalv2
       kaas.mirantis.com/region: region-one
       cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
   spec: *cp_spec
@@ -42,7 +45,7 @@ items:
     name: CLUSTER_NAME-ctl-03
     namespace: NAMESPACE
     labels:
-      kaas.mirantis.com/provider: equinixmetal
+      kaas.mirantis.com/provider: equinixmetalv2
       kaas.mirantis.com/region: region-one
       cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
   spec: *cp_spec

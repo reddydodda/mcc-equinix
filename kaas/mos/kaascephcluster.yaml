@@ -14,8 +14,8 @@ spec:
       fsid: ""
       monData: ""
     network:
-      clusterNet: 10.0.0.0/0
-      publicNet: 10.0.0.0/0
+      clusterNet: SET_EQUINIX_NETWORK_CIDR
+      publicNet: SET_EQUINIX_NETWORK_CIDR
     objectStorage:
       rgw:
         name: rgw-store
@@ -24,12 +24,12 @@ spec:
             codingChunks: 1
             dataChunks: 2
           failureDomain: host
-          deviceClass: hdd
+          deviceClass: SET_CEPH_DISK_CLASS
         metadataPool:
           replicated:
             size: 2
           failureDomain: host
-          deviceClass: hdd
+          deviceClass: SET_CEPH_DISK_CLASS
         gateway:
           allNodes: false
           instances: 2
@@ -41,7 +41,7 @@ spec:
     #################
     pools:
     - default: true
-      deviceClass: hdd
+      deviceClass: SET_CEPH_DISK_CLASS
       name: kubernetes
       erasureCoded:
         codingChunks: 0
@@ -49,9 +49,9 @@ spec:
       replicated:
         size: 2
         targetSizeRatio: 0.4
-      role: kubernetes-hdd
+      role: kubernetes-SET_CEPH_DISK_CLASS
     - default: false
-      deviceClass: hdd
+      deviceClass: SET_CEPH_DISK_CLASS
       name: volumes
       erasureCoded:
         codingChunks: 0
@@ -61,7 +61,7 @@ spec:
         targetSizeRatio: 4.0
       role: volumes
     - default: false
-      deviceClass: hdd
+      deviceClass: SET_CEPH_DISK_CLASS
       name: vms
       erasureCoded:
         codingChunks: 0
@@ -71,7 +71,7 @@ spec:
         targetSizeRatio: 1.0
       role: vms
     - default: false
-      deviceClass: hdd
+      deviceClass: SET_CEPH_DISK_CLASS
       name: backup
       erasureCoded:
         codingChunks: 0
@@ -81,7 +81,7 @@ spec:
         targetSizeRatio: 1.0
       role: backup
     - default: false
-      deviceClass: hdd
+      deviceClass: SET_CEPH_DISK_CLASS
       name: images
       erasureCoded:
         codingChunks: 0
@@ -91,7 +91,7 @@ spec:
         targetSizeRatio: 1.5
       role: images
     - default: false
-      deviceClass: hdd
+      deviceClass: SET_CEPH_DISK_CLASS
       name: other
       erasureCoded:
         codingChunks: 0
@@ -122,60 +122,60 @@ spec:
         - name: sdc
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme0n1
         - name: sdd
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme0n1
         - name: sde
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme0n1
         - name: sdf
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme0n1
         - name: sdg
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme0n1
         - name: sdh
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme0n1
         - name: sdi
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme1n1
         - name: sdj
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme1n1
         - name: sdk
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme1n1
         - name: sdl
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme1n1
         - name: sdm
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme1n1
         - name: sdn
           config:
             osdsPerDevice: "1"
-            deviceClass: hdd
+            deviceClass: SET_CEPH_DISK_CLASS
             metadataDevice: nvme1n1
