@@ -51,6 +51,8 @@ spec:
             default: null
       network:
         vlanId: "SET_EQUINIX_VLAN_ID"
+        additionalVlans:
+        - id: "SET_FIP_VLAN_ID"
         loadBalancerHost: SET_LB_HOST
         metallbRanges:
           - SET_EQUINIX_METALLB_RANGES

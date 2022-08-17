@@ -1,0 +1,43 @@
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: L2Template
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: CLUSTER_NAME
+    kaas.mirantis.com/provider: equinixmetal
+    kaas.mirantis.com/region: region-one
+  name: CLUSTER_NAME-master
+  namespace: NAMESPACE
+spec:
+  clusterRef: CLUSTER_NAME
+  autoIfMappingPrio:
+  - provision
+  - enp
+  - ens
+  - eno
+  l3Layout:
+  - scope: namespace
+    subnetName: CLUSTER_NAME
+  npTemplate: |
+    version: 2
+    ethernets:
+      {{nic 0}}:
+        set-name: {{nic 0}}
+        match:
+          macaddress: {{mac 0}}
+      {{nic 1}}:
+        set-name: {{nic 1}}
+        match:
+          macaddress: {{mac 1}}
+    bonds:
+      bond0:
+        interfaces:
+          - {{nic 0}}
+          - {{nic 1}}
+        parameters:
+            mode: active-backup
+            primary: {{nic 0}}
+        addresses:
+          - {{ip "bond0:CLUSTER_NAME"}}
+        gateway4: {{gateway_from_subnet "CLUSTER_NAME"}}
+        nameservers:
+          addresses: {{nameservers_from_subnet "CLUSTER_NAME"}}

@@ -16,6 +16,8 @@ export EQUINIX_SSH_KEY_NAME="cdodda_key"
 # Networking
 ###############
 export SET_EQUINIX_VLAN_ID="1001"
+export SET_FIP_VLAN_ID="1002"
+
 export SET_LB_HOST="192.168.1.10"
 export SET_EQUINIX_METALLB_RANGES="192.168.1.30-192.168.1.49"
 export SET_EQUINIX_NETWORK_CIDR="192.168.1.0/24"

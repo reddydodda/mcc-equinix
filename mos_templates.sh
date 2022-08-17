@@ -41,7 +41,9 @@ sed -i "s|EQUINIX_SSH_KEY_NAME|${EQUINIX_SSH_KEY_NAME}|g" $home_dir/cluster.yaml
 ###################
 # Networking 
 ###################
-sed -i "s|SET_EQUINIX_VLAN_ID|${SET_EQUINIX_VLAN_ID}|g" $home_dir/cluster.yaml
+sed -i "s|SET_EQUINIX_VLAN_ID|${SET_EQUINIX_VLAN_ID}|g" $home_dir/*.yaml
+sed -i "s|SET_FIP_VLAN_ID|${SET_FIP_VLAN_ID}|g" $home_dir/*.yaml
+
 sed -i "s|SET_LB_HOST|${SET_LB_HOST}|g" $home_dir/cluster.yaml
 sed -i "s|SET_EQUINIX_METALLB_RANGES|${SET_EQUINIX_METALLB_RANGES}|g" $home_dir/cluster.yaml
 sed -i "s|SET_EQUINIX_NETWORK_CIDR|${SET_EQUINIX_NETWORK_CIDR}|g" $home_dir/*.yaml
