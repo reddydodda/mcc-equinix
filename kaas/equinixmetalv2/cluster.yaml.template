@@ -68,4 +68,4 @@ spec:
             - name: iam
               requiresPersistentVolumes: true
         projectSSHKeys:
-          - "BOOTSTRAP_SSH_PUBLIC_KEY"
+          - "EQUINIX_SSH_KEY_NAME"

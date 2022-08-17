@@ -36,6 +36,7 @@ sed -i "s|NAMESPACE|${NAMESPACE}|g" $home_dir/*
 sed -i "s|CLUSTER_RELEASE|${CLUSTER_RELEASE}|g" $home_dir/cluster.yaml
 sed -i "s|DEDICATED_CONTROL_PLANE|${DEDICATED_CONTROL_PLANE}|g" $home_dir/cluster.yaml
 
+sed -i "s|EQUINIX_SSH_KEY_NAME|${EQUINIX_SSH_KEY_NAME}|g" $home_dir/cluster.yaml
 ###################
 # Networking 
 ###################

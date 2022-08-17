@@ -67,7 +67,7 @@ spec:
       publicKeys:
       - name: bootstrap-key
       projectSSHKeys:
-      - name: cdodda_key
+      - "EQUINIX_SSH_KEY_NAME"
       kaas:
         management:
           enabled: false

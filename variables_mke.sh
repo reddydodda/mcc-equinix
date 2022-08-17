@@ -10,6 +10,8 @@ export SET_EQUINIX_PROJECT_ID="${TF_VAR_project_id}"
 # Same as Metro code from step 3
 export EQUINIX_FACILITY=da11
 
+export EQUINIX_SSH_KEY_NAME="cdodda_key"
+
 ##################
 # Networking
 ##################

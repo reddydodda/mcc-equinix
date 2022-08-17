@@ -15,8 +15,8 @@ export EQUINIX_MACHINE_TYPE=c3.small.x86
 export MACHINES_COUNT=6
 # Enable debug
 export KAAS_BOOTSTRAP_DEBUG=true
-# Use same ssh key used for seed node
-export BOOTSTRAP_SSH_PUBLIC_KEY="ssh-rsa AAAAB3akIoq/AdCRHBfzcSYVbKh89ClR3ya3SD8NV mirantis@kaas"
+# This need to be ssh key name created in equinx
+export EQUINIX_SSH_KEY_NAME="cdodda_equinx_key"
 
 ##################
 # Networking

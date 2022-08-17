@@ -62,7 +62,7 @@ sed -i "s|EQUINIX_MACHINE_TYPE|${EQUINIX_MACHINE_TYPE}|g" $home_dir/kaas-bootstr
 ############
 # SSH key
 ############
-sed -i "s|BOOTSTRAP_SSH_PUBLIC_KEY|${BOOTSTRAP_SSH_PUBLIC_KEY}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
+sed -i "s|EQUINIX_SSH_KEY_NAME|${EQUINIX_SSH_KEY_NAME}|g" $home_dir/kaas-bootstrap/templates/equinixmetalv2/cluster.yaml.template
 ###################
 # bootstrap.env
 ###################
