@@ -83,7 +83,7 @@ cat << EOF >> $home_dir/machines_cmp.yaml
   spec: *cp_spec
 EOF
 
-if [ "${CEPH_MANUAL_CONFIGURATION}" = true ]; then
+if [ "${CEPH_MANUAL_CONFIGURATION}" = true ] || [ "${CEPH_MANUAL_CONFIGURATION}" = True ]; then
 cat << EOF >> $home_dir/kaascephcluster.yaml
       $CLUSTER_NAME-cmp-0$count:
         storageDevices:

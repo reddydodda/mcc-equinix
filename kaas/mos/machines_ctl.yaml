@@ -17,9 +17,6 @@ items:
         kind: EquinixMetalMachineProviderSpec
         distribution: ubuntu/focal
         machineType: EQUINIX_MACHINE_TYPE_CTL
-        ceph:
-          managerMonitor: true
-          storage: false
         nodeLabels:
         - key: stacklight
           value: enabled

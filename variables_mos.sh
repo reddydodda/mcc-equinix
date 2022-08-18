@@ -45,5 +45,5 @@ export EQUINIX_MACHINE_TYPE_CMP=s3.xlarge.x86
 #############
 #ceph
 #############
-export CEPH_MANUAL_CONFIGURATION="True"
+export CEPH_MANUAL_CONFIGURATION="true"
 export SET_CEPH_DISK_CLASS="hdd"

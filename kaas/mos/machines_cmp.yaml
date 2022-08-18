@@ -17,9 +17,6 @@ items:
         kind: EquinixMetalMachineProviderSpec
         distribution: ubuntu/focal
         machineType: EQUINIX_MACHINE_TYPE_CMP
-        ceph:
-          managerMonitor: false
-          storage: true
         nodeLabels:
         - displayName: OpenStack compute
           key: openstack-compute-node

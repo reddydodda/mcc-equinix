@@ -18,9 +18,6 @@ items:
         kind: EquinixMetalMachineProviderSpec
         distribution: ubuntu/focal
         machineType: EQUINIX_MACHINE_TYPE_MASTER
-        ceph:
-          managerMonitor: false
-          storage: false
 - apiVersion: "cluster.k8s.io/v1alpha1"
   kind: Machine
   metadata:
