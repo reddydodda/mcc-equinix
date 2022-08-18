@@ -41,6 +41,7 @@ spec:
   ###########
   # Services
   ##########
+  services:
     orchestration:
       heat:
         values:
