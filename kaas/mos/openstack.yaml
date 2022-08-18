@@ -30,10 +30,10 @@ spec:
         enabled: true
         physnet: physnet1
         subnet:
-          gateway: 192.168.3.1
-          pool_end: 192.168.3.250
-          pool_start: 192.168.3.100
-          range: 192.168.3.0/24
+          gateway: 192.168.2.1
+          pool_end: 192.168.2.250
+          pool_start: 192.168.2.100
+          range: 192.168.2.0/24
     nova:
       live_migration_interface: bond0.1001
       images:

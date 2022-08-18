@@ -22,9 +22,9 @@ sleep 15
 kubectl apply -f ${home_dir}/cluster.yaml
 sleep 10
 kubectl apply -f ${home_dir}/machines_master.yaml
-sleep 15
+sleep 30
 kubectl apply -f ${home_dir}/machines_ctl.yaml
-sleep 15
+sleep 30
 kubectl apply -f ${home_dir}/machines_cmp.yaml
 
 echo "Completed"
