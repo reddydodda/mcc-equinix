@@ -65,5 +65,5 @@ spec:
           helmReleases:
             - name: iam
               requiresPersistentVolumes: true
-        projectSSHKeys:
-          - "EQUINIX_SSH_KEY_NAME"
+      projectSSHKeys:
+      - "EQUINIX_SSH_KEY_NAME"
