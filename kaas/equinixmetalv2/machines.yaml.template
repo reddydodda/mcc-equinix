@@ -5,28 +5,31 @@ items:
   kind: Machine
   metadata:
     name: kaas-mgmt-controlplane-0
-    labels:
+    labels: &cp_labels
       kaas.mirantis.com/provider: equinixmetalv2
       cluster.sigs.k8s.io/control-plane: "true"
+      cluster.sigs.k8s.io/cluster-name: kaas-mgmt
+      kaas.mirantis.com/region: region-one
   spec: &cp_spec
     providerSpec:
       value: &cp_value
         apiVersion: equinix.kaas.mirantis.com/v1alpha2
         kind: EquinixMetalMachineProviderSpec
         machineType: EQUINIX_MACHINE_TYPE
+        # Specify custom bareMetalHostProfile for the machine. BMHProfile
+        # should be defined in the baremetalhostprofile.yaml.template file
+        # bareMetalHostProfile: default
 - apiVersion: "cluster.k8s.io/v1alpha1"
   kind: Machine
   metadata:
     name: kaas-mgmt-controlplane-1
     labels:
-      kaas.mirantis.com/provider: equinixmetalv2
-      cluster.sigs.k8s.io/control-plane: "true"
+      <<: *cp_labels
   spec: *cp_spec
 - apiVersion: "cluster.k8s.io/v1alpha1"
   kind: Machine
   metadata:
     name: kaas-mgmt-controlplane-2
     labels:
-      kaas.mirantis.com/provider: equinixmetalv2
-      cluster.sigs.k8s.io/control-plane: "true"
+      <<: *cp_labels
   spec: *cp_spec

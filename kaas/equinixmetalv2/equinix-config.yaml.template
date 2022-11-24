@@ -3,6 +3,9 @@ apiVersion: kaas.mirantis.com/v1alpha1
 kind: EquinixMetalCredential
 metadata:
   name: cloud-config
+  labels:
+    kaas.mirantis.com/region: region-one
+    kaas.mirantis.com/regional-credential: "true"
 spec:
   projectID: SET_EQUINIX_PROJECT_ID
   apiToken:

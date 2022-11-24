@@ -44,6 +44,8 @@ spec:
           - SET_EQUINIX_CIDR_INCLUDE_RANGES
         excludeRanges:
           - SET_EQUINIX_CIDR_EXCLUDE_RANGES
+        nameservers:
+          - SET_EQUINIX_NETWORK_NAMESERVERS
       kaas:
         # Set from KaaSRelease during bootstrap process
         # release:
@@ -58,12 +60,9 @@ spec:
                     servers:
                     - SET_EQUINIX_NTP_SERVER
         - provider: byo
-        - provider: aws
-        - provider: openstack
+        #- provider: aws
+        #- provider: openstack
         management:
           enabled: true
-          helmReleases:
-            - name: iam
-              requiresPersistentVolumes: true
       projectSSHKeys:
       - "EQUINIX_SSH_KEY_NAME"
